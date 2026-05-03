@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const admin = require("firebase-admin");
+const crypto = require("crypto");
 const prisma = require("../db");
 
 // Initialize Firebase Admin
@@ -123,15 +124,21 @@ router.post("/social", async (req, res) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const { email, name, picture, uid } = decodedToken;
 
-    // 2. Find or Create the user in our SQLite DB (Upsert)
+    if (!email) {
+      return res.status(400).json({ error: "No email returned by social provider." });
+    }
+
+    // 2. Find or Create the user in our DB
     let user = await prisma.user.findUnique({ where: { email } });
 
     if (!user) {
+      // Keep passwordHash populated to satisfy current required schema for social-only accounts.
+      const socialPasswordHash = await bcrypt.hash(`social:${uid}:${crypto.randomUUID()}`, 10);
       user = await prisma.user.create({
         data: {
           email,
           name: name || email.split("@")[0],
-          // passwordHash is null for social users
+          passwordHash: socialPasswordHash,
         },
       });
     }
@@ -151,7 +158,12 @@ router.post("/social", async (req, res) => {
     });
   } catch (error) {
     console.error("Social Auth Error:", error);
-    res.status(401).json({ error: "Social authentication failed", details: error.message });
+    const code = typeof error?.code === "string" ? error.code : "";
+    const status = code.startsWith("auth/") ? 401 : 500;
+    res.status(status).json({
+      error: "Social authentication failed",
+      details: error.message,
+    });
   }
 });
 

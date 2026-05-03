@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.innerHTML = `
                     <a href="#features">Features</a>
                     <a href="#comparison">Compare</a>
+                    <a href="/pricing">Pricing</a>
                     <a href="#api">API</a>
                     <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
                     <a href="#" id="logout-btn" class="btn btn-outline">Logout</a>
@@ -222,8 +223,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('logout-btn').addEventListener('click', logout);
             }
             if (getStartedBtn) {
-                getStartedBtn.textContent = 'Go to Dashboard';
-                getStartedBtn.href = 'dashboard.html';
+                getStartedBtn.textContent = 'View Pricing';
+                getStartedBtn.href = '/pricing';
                 getStartedBtn.onclick = null;
             }
         } else {
@@ -232,15 +233,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.innerHTML = `
                     <a href="#features">Features</a>
                     <a href="#comparison">Compare</a>
+                    <a href="/pricing">Pricing</a>
                     <a href="#api">API</a>
                     <a href="#" class="btn btn-outline" onclick="openModal('login')">Sign In</a>
                     <a href="#" class="btn btn-primary" onclick="openModal('signup')">Get Started</a>
                 `;
             }
             if (getStartedBtn) {
-                getStartedBtn.textContent = 'Start Building Free';
-                getStartedBtn.href = '#';
-                getStartedBtn.onclick = (e) => { e.preventDefault(); openModal('signup'); };
+                getStartedBtn.textContent = 'View Pricing';
+                getStartedBtn.href = '/pricing';
+                getStartedBtn.onclick = null;
             }
         }
     }

@@ -74,17 +74,17 @@
 
     <nav class="glass-nav">
         <div class="nav-container">
-            <a href="index.html" class="logo">RiseLab<span>.</span></a>
+            <a href="/" class="logo">RiseLab<span>.</span></a>
             <div class="nav-links">
-                <a href="index.html#features">Features</a>
-                <a href="pricing.html" style="color: var(--accent-primary);">Pricing</a>
-                <a href="index.html#api">API</a>
-                <a href="index.html" class="btn btn-outline">Home</a>
+                <a href="/#features">Features</a>
+                <a href="/pricing" style="color: var(--accent-primary);">Pricing</a>
+                <a href="/#api">API</a>
+                <a href="/" class="btn btn-outline">Home</a>
             </div>
         </div>
     </nav>
 
-    <a href="index.html" class="back-link">
+    <a href="/" class="back-link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
         Back to Home
     </a>
@@ -342,14 +342,14 @@
         <details class="faq-item glass-panel">
             <summary>What's your refund policy?</summary>
             <div class="faq-answer">
-                We offer a 14-day money-back guarantee on all paid plans. No questions asked. For full details, see our <a href="refund.html">Refund Policy</a>.
+                We offer a 14-day money-back guarantee on all paid plans. No questions asked. For full details, see our <a href="/refund">Refund Policy</a>.
             </div>
         </details>
 
         <details class="faq-item glass-panel">
             <summary>Can I use RiseLab for commercial projects?</summary>
             <div class="faq-answer">
-                Absolutely. All plans, including Free, allow commercial use. The only restriction is that you may not resell API access directly without our written consent. See our <a href="terms.html">Terms & Conditions</a> for details.
+                Absolutely. All plans, including Free, allow commercial use. The only restriction is that you may not resell API access directly without our written consent. See our <a href="/terms">Terms & Conditions</a> for details.
             </div>
         </details>
     </section>
@@ -363,15 +363,15 @@
             <div class="footer-links">
                 <div class="link-group">
                     <h4>Platform</h4>
-                    <a href="index.html#api">API Docs</a>
-                    <a href="pricing.html">Pricing</a>
+                    <a href="/#api">API Docs</a>
+                    <a href="/pricing">Pricing</a>
                     <a href="#">Status</a>
                 </div>
                 <div class="link-group">
                     <h4>Legal</h4>
-                    <a href="terms.html">Terms</a>
-                    <a href="privacy.html">Privacy</a>
-                    <a href="refund.html">Refunds</a>
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                    <a href="/refund">Refunds</a>
                 </div>
             </div>
         </div>
@@ -385,7 +385,7 @@
         async function handleUpgrade(plan, event) {
             const token = localStorage.getItem('riselab_token');
             if (!token) {
-                window.location.href = 'index.html';
+                window.location.href = '/';
                 return;
             }
 
