@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "RiseLab",
+        "supportEmail": "digitaldivine157@gmail.com",
+        "authorizedRedirectUris": [
+          "http://localhost:4000",
+          "http://localhost:3000"
+        ]
+      },
+      "githubSignIn": {
+        "authorizedRedirectUris": [
+          "http://localhost:4000",
+          "http://localhost:3000"
+        ]
+      }
+    }
+  }
+}

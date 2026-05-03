@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String?  @map("password_hash")
+  name         String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  agents       Agent[]
+
+  @@map("user")
+}
+
+model Agent {
+  id        String   @id @default(uuid())
+  name      String
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan      String   @default("free")
+  createdAt DateTime @default(now()) @map("created_at")
+  memories  Memory[]
+  apiKeys   ApiKey[]
+
+  @@map("agent")
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  agentId   String   @map("agent_id")
+  agent     Agent    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("api_key")
+}
+
+model Memory {
+  id              String                   @id @default(uuid())
+  agentId         String                   @map("agent_id")
+  content         String
+  embeddingVector String?                  @map("embedding_vector")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+  agent           Agent                    @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@index([agentId])
+  @@map("memory")
+}
+
+model Knowledge {
+  id              String                   @id @default(uuid())
+  title           String
+  summary         String
+  source          String
+  date            DateTime
+  embeddingVector String?                  @map("embedding_vector")
+  createdAt       DateTime                 @default(now()) @map("created_at")
+
+  @@map("knowledge")
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  fromId    String   @map("from_id")
+  toId      String   @map("to_id")
+  content   String
+  metadata  Json?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("message")
+}
