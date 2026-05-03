@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | RiseLab — API Plans for AI Agents</title>
+    <meta name="description" content="Simple, transparent pricing for RiseLab's AI agent infrastructure. Start free, scale to production with Pro, or go custom with Enterprise.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        .pricing-hero { padding: 160px 24px 60px; text-align: center; max-width: 720px; margin: 0 auto; }
+        .pricing-hero .page-badge { display: inline-block; padding: 6px 16px; border-radius: 100px; background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2); color: var(--accent-primary); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+        .pricing-hero h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); margin-bottom: 16px; }
+        .pricing-hero p { color: var(--text-secondary); font-size: 1.1rem; max-width: 540px; margin: 0 auto; }
+
+        .pricing-page-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+        @media (max-width: 900px) { .pricing-page-grid { grid-template-columns: 1fr; max-width: 480px; } }
+
+        .pricing-page-card { padding: 40px; border-radius: 20px; display: flex; flex-direction: column; position: relative; }
+        .pricing-page-card.featured { border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.04); }
+        .pricing-page-card .popular-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 4px 16px; border-radius: 100px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: #fff; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+        .pricing-page-card .plan-name { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+        .pricing-page-card .plan-price { font-size: 3rem; font-weight: 800; font-family: 'Outfit', sans-serif; margin-bottom: 4px; }
+        .pricing-page-card .plan-price span { font-size: 1rem; font-weight: 400; color: var(--text-secondary); }
+        .pricing-page-card .plan-desc { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 28px; line-height: 1.6; }
+        .pricing-page-card .feature-list { list-style: none; padding: 0; margin: 0 0 32px; flex: 1; }
+        .pricing-page-card .feature-list li { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; color: var(--text-secondary); font-size: 0.9rem; border-bottom: 1px solid var(--glass-border); }
+        .pricing-page-card .feature-list li:last-child { border-bottom: none; }
+        .pricing-page-card .feature-list li svg { flex-shrink: 0; margin-top: 2px; }
+        .pricing-page-card .feature-list .check { color: var(--positive); }
+        .pricing-page-card .feature-list .dash { color: var(--text-secondary); opacity: 0.3; }
+        .pricing-page-card .plan-cta { width: 100%; padding: 14px; font-size: 0.95rem; }
+
+        /* Comparison Table */
+        .compare-section { max-width: 1080px; margin: 0 auto; padding: 60px 24px 80px; }
+        .compare-section h2 { text-align: center; font-size: 1.8rem; margin-bottom: 8px; }
+        .compare-section > p { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
+        .compare-table { width: 100%; border-collapse: collapse; }
+        .compare-table th, .compare-table td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
+        .compare-table th { color: var(--text-primary); font-weight: 600; }
+        .compare-table th:first-child { color: var(--text-secondary); font-weight: 500; }
+        .compare-table td { color: var(--text-secondary); }
+        .compare-table td:first-child { color: var(--text-primary); font-weight: 500; }
+        .compare-table thead th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; padding-bottom: 20px; }
+        .compare-table .highlight-col { color: var(--accent-primary) !important; }
+        .compare-table tr:last-child td { border-bottom: none; }
+
+        /* FAQ */
+        .faq-section { max-width: 720px; margin: 0 auto; padding: 20px 24px 100px; }
+        .faq-section h2 { text-align: center; font-size: 1.8rem; margin-bottom: 8px; }
+        .faq-section > p { text-align: center; color: var(--text-secondary); margin-bottom: 40px; }
+        .faq-item { margin-bottom: 12px; }
+        .faq-item summary { cursor: pointer; padding: 20px 24px; font-size: 0.95rem; font-weight: 500; color: var(--text-primary); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .faq-item summary::-webkit-details-marker { display: none; }
+        .faq-item summary::after { content: '+'; font-size: 1.3rem; color: var(--accent-primary); transition: transform 0.3s ease; }
+        .faq-item[open] summary::after { content: '−'; }
+        .faq-item .faq-answer { padding: 0 24px 20px; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; }
+        .faq-item .faq-answer a { color: var(--accent-primary); text-decoration: underline; text-underline-offset: 3px; }
+
+        .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 24px; transition: color 0.3s ease; padding: 0 24px; max-width: 1080px; margin: 0 auto; display: flex; padding-top: 120px; }
+        .back-link:hover { color: var(--accent-primary); text-shadow: none; }
+        .back-link svg { width: 16px; height: 16px; }
+    </style>
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <nav class="glass-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">RiseLab<span>.</span></a>
+            <div class="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="pricing.html" style="color: var(--accent-primary);">Pricing</a>
+                <a href="index.html#api">API</a>
+                <a href="index.html" class="btn btn-outline">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Home
+    </a>
+
+    <section class="pricing-hero">
+        <span class="page-badge">Pricing</span>
+        <h1>Scale your agent's <span class="text-gradient">intelligence</span></h1>
+        <p>Simple, transparent pricing. Start free, upgrade when your agents need more power. No hidden fees.</p>
+    </section>
+
+    <!-- Pricing Cards -->
+    <div class="pricing-page-grid">
+
+        <!-- Free -->
+        <div class="pricing-page-card glass-panel">
+            <div class="plan-name">Free</div>
+            <div class="plan-price">$0 <span>/ month</span></div>
+            <p class="plan-desc">Perfect for testing, prototyping, and learning the API.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    1,000 API requests / month
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    1 agent memory space
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Standard latency (~200ms)
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Basic trends API
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Community support
+                </li>
+                <li>
+                    <svg class="dash" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span style="opacity:0.5;">Multi-agent collaboration</span>
+                </li>
+                <li>
+                    <svg class="dash" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span style="opacity:0.5;">Priority vector search</span>
+                </li>
+            </ul>
+            <button class="btn btn-outline plan-cta" onclick="handleUpgrade('free', event)">Get Started Free</button>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-page-card glass-panel featured">
+            <div class="popular-tag">Most Popular</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">$49 <span>/ month</span></div>
+            <p class="plan-desc">For production-grade agent fleets that need real-time intelligence.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    100,000 API requests / month
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Unlimited memory spaces
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Low latency (~50ms)
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Multi-agent fleet sync
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Priority vector search
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Advanced analytics dashboard
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Email support (24h response)
+                </li>
+            </ul>
+            <button class="btn btn-primary plan-cta" onclick="handleUpgrade('pro', event)">Start 14-Day Free Trial</button>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-page-card glass-panel">
+            <div class="plan-name">Enterprise</div>
+            <div class="plan-price">Custom</div>
+            <p class="plan-desc">For large-scale AI infrastructure with dedicated resources and SLAs.</p>
+            <ul class="feature-list">
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Unlimited API requests
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Dedicated compute nodes
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Ultra-low latency (<20ms)
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    VPC peering & SSO
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Custom ingestion pipelines
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    99.9% SLA guarantee
+                </li>
+                <li>
+                    <svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    Dedicated account manager
+                </li>
+            </ul>
+            <button class="btn btn-outline plan-cta" onclick="handleUpgrade('enterprise', event)">Contact Sales</button>
+        </div>
+    </div>
+
+    <!-- Detailed Comparison -->
+    <section class="compare-section">
+        <h2>Full Feature Comparison</h2>
+        <p>See exactly what's included in each plan.</p>
+        <div class="glass-panel" style="padding: 32px; overflow-x: auto;">
+            <table class="compare-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free</th>
+                        <th class="highlight-col">Pro</th>
+                        <th>Enterprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>API Requests</td>
+                        <td>1,000/mo</td>
+                        <td class="highlight-col">100,000/mo</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Response Latency</td>
+                        <td>~200ms</td>
+                        <td class="highlight-col">~50ms</td>
+                        <td>&lt;20ms</td>
+                    </tr>
+                    <tr>
+                        <td>Memory Spaces</td>
+                        <td>1</td>
+                        <td class="highlight-col">Unlimited</td>
+                        <td>Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td>Knowledge Feed</td>
+                        <td>✓</td>
+                        <td class="highlight-col">✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Semantic Search</td>
+                        <td>Basic</td>
+                        <td class="highlight-col">Priority</td>
+                        <td>Dedicated</td>
+                    </tr>
+                    <tr>
+                        <td>Fleet Sync</td>
+                        <td>—</td>
+                        <td class="highlight-col">✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Multi-Agent Collaboration</td>
+                        <td>—</td>
+                        <td class="highlight-col">✓</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>Analytics Dashboard</td>
+                        <td>Basic</td>
+                        <td class="highlight-col">Advanced</td>
+                        <td>Custom</td>
+                    </tr>
+                    <tr>
+                        <td>Custom Ingestion</td>
+                        <td>—</td>
+                        <td class="highlight-col">—</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>VPC Peering & SSO</td>
+                        <td>—</td>
+                        <td class="highlight-col">—</td>
+                        <td>✓</td>
+                    </tr>
+                    <tr>
+                        <td>SLA</td>
+                        <td>Best effort</td>
+                        <td class="highlight-col">99.5%</td>
+                        <td>99.9%</td>
+                    </tr>
+                    <tr>
+                        <td>Support</td>
+                        <td>Community</td>
+                        <td class="highlight-col">Email (24h)</td>
+                        <td>Dedicated Manager</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        <p>Everything you need to know about RiseLab pricing.</p>
+
+        <details class="faq-item glass-panel">
+            <summary>Can I switch plans at any time?</summary>
+            <div class="faq-answer">
+                Yes! You can upgrade or downgrade your plan at any time from your dashboard. Upgrades take effect immediately, and you'll be charged the prorated difference. Downgrades take effect at the start of your next billing cycle.
+            </div>
+        </details>
+
+        <details class="faq-item glass-panel">
+            <summary>What happens if I exceed my request limit?</summary>
+            <div class="faq-answer">
+                On the Free plan, API requests are throttled once you hit your monthly limit. On Pro, you'll receive a warning at 80% usage, and overages are billed at $0.001 per additional request. Enterprise plans have no hard limits.
+            </div>
+        </details>
+
+        <details class="faq-item glass-panel">
+            <summary>Is there a free trial for the Pro plan?</summary>
+            <div class="faq-answer">
+                Yes! Every Pro subscription starts with a 14-day free trial. No credit card is required to start. If you don't upgrade, you'll automatically move to the Free tier at the end of the trial.
+            </div>
+        </details>
+
+        <details class="faq-item glass-panel">
+            <summary>Do you offer annual billing?</summary>
+            <div class="faq-answer">
+                Annual billing is coming soon. Subscribe to our mailing list to be notified when it launches. Enterprise customers can arrange custom billing terms — contact our sales team.
+            </div>
+        </details>
+
+        <details class="faq-item glass-panel">
+            <summary>What's your refund policy?</summary>
+            <div class="faq-answer">
+                We offer a 14-day money-back guarantee on all paid plans. No questions asked. For full details, see our <a href="refund.html">Refund Policy</a>.
+            </div>
+        </details>
+
+        <details class="faq-item glass-panel">
+            <summary>Can I use RiseLab for commercial projects?</summary>
+            <div class="faq-answer">
+                Absolutely. All plans, including Free, allow commercial use. The only restriction is that you may not resell API access directly without our written consent. See our <a href="terms.html">Terms & Conditions</a> for details.
+            </div>
+        </details>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>RiseLab.</h3>
+                <p>The living knowledge layer for AI.</p>
+            </div>
+            <div class="footer-links">
+                <div class="link-group">
+                    <h4>Platform</h4>
+                    <a href="index.html#api">API Docs</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="#">Status</a>
+                </div>
+                <div class="link-group">
+                    <h4>Legal</h4>
+                    <a href="terms.html">Terms</a>
+                    <a href="privacy.html">Privacy</a>
+                    <a href="refund.html">Refunds</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 RiseLab. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        async function handleUpgrade(plan, event) {
+            const token = localStorage.getItem('riselab_token');
+            if (!token) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            if (plan === 'free') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            if (plan === 'enterprise') {
+                window.location.href = 'mailto:enterprise@riselab.tech';
+                return;
+            }
+
+            try {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Processing...';
+
+                const AUTH_API_BASE = window.RISELAB_API_BASE || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:4000' : '');
+
+                const res = await fetch(`${AUTH_API_BASE}/api/stripe/create-checkout-session`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ plan })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Upgrade failed');
+
+                window.location.href = data.url;
+            } catch (err) {
+                alert('Error: ' + err.message);
+                const btn = event.target;
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Retry';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
