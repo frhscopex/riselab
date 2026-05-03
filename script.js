@@ -14,6 +14,8 @@ if (typeof firebase !== 'undefined') {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const AUTH_API_BASE = window.RISELAB_API_BASE || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:4000' : '');
+    
     // Scroll reveal animation
     const revealElements = document.querySelectorAll('.reveal');
     
@@ -110,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             try {
                 let response;
-                const baseUrl = 'http://localhost:4000/api';
+                const baseUrl = 'https://riselab.tech/api';
                 
                 if (endpointKey === 'feed') {
                     response = await fetch(`${baseUrl}/feed`);
@@ -191,7 +193,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auth state management
     function updateAuthState() {
         const token = localStorage.getItem('riselab_token');
-        const user = JSON.parse(localStorage.getItem('riselab_user') || 'null');
+        let user = null;
+        try {
+            const storedUser = localStorage.getItem('riselab_user');
+            if (storedUser && storedUser !== 'undefined') {
+                user = JSON.parse(storedUser);
+            }
+        } catch (e) {
+            console.warn('Failed to parse user from localStorage', e);
+            localStorage.removeItem('riselab_user');
+            localStorage.removeItem('riselab_token');
+        }
+
         
         const navLinks = document.querySelector('.nav-links');
         const getStartedBtn = document.querySelector('.cta-group .btn-primary');
@@ -278,6 +291,10 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             errorEl.style.display = 'none';
             setFormLoading(form, true);
+
+            if (typeof firebase === 'undefined' || !firebase.auth) {
+                throw new Error('Firebase SDK is not loaded.');
+            }
             
             let authProvider;
             if (provider === 'google') {
@@ -293,18 +310,28 @@ document.addEventListener('DOMContentLoaded', () => {
             const idToken = await result.user.getIdToken();
 
             // 2. Exchange Firebase Token for our Backend JWT
-            const res = await fetch('http://localhost:4000/api/auth/social', {
+            const res = await fetch(`${AUTH_API_BASE}/api/auth/social`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idToken })
             });
 
-            const data = await res.json();
+            const raw = await res.text();
+            let data = {};
+            if (raw) {
+                try {
+                    data = JSON.parse(raw);
+                } catch (_error) {
+                    throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
+                }
+            }
             if (!res.ok) throw new Error(data.error || 'Social login failed');
 
             // 3. Save session and redirect
             localStorage.setItem('riselab_token', data.token);
-            localStorage.setItem('riselab_user', JSON.stringify(data.user));
+            if (data.user) {
+                localStorage.setItem('riselab_user', JSON.stringify(data.user));
+            }
             
             closeModals();
             window.location.href = 'dashboard.html';
@@ -343,17 +370,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 setFormLoading(loginForm, true);
                 errorEl.style.display = 'none';
 
-                const res = await fetch('http://localhost:4000/api/auth/login', {
+                const res = await fetch(`${AUTH_API_BASE}/api/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
-                const data = await res.json();
+                const raw = await res.text();
+                let data = {};
+                if (raw) {
+                    try {
+                        data = JSON.parse(raw);
+                    } catch (_error) {
+                        throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
+                    }
+                }
                 if (!res.ok) throw new Error(data.error || 'Login failed');
 
                 localStorage.setItem('riselab_token', data.token);
-                localStorage.setItem('riselab_user', JSON.stringify(data.user));
+                if (data.user) {
+                    localStorage.setItem('riselab_user', JSON.stringify(data.user));
+                }
+
                 
                 closeModals();
                 window.location.href = 'dashboard.html';
@@ -384,17 +422,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 setFormLoading(signupForm, true);
                 errorEl.style.display = 'none';
 
-                const res = await fetch('http://localhost:4000/api/auth/register', {
+                const res = await fetch(`${AUTH_API_BASE}/api/auth/register`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name, email, password })
                 });
 
-                const data = await res.json();
+                const raw = await res.text();
+                let data = {};
+                if (raw) {
+                    try {
+                        data = JSON.parse(raw);
+                    } catch (_error) {
+                        throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
+                    }
+                }
                 if (!res.ok) throw new Error(data.error || 'Registration failed');
 
                 localStorage.setItem('riselab_token', data.token);
-                localStorage.setItem('riselab_user', JSON.stringify(data.user));
+                if (data.user) {
+                    localStorage.setItem('riselab_user', JSON.stringify(data.user));
+                }
+
                 
                 closeModals();
                 window.location.href = 'dashboard.html';

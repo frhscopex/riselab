@@ -125,6 +125,54 @@ body {
     color: var(--primary);
 }
 
+.user-plan-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.upgrade-link {
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    color: var(--primary);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.upgrade-link:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.stripe-notification {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    margin-left: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.stripe-notification.success {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.stripe-notification.error {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* Main Content */
 .dashboard-content {
     flex-grow: 1;

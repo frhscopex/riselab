@@ -276,7 +276,7 @@
                     <li><i class="fas fa-check"></i> 1 Agent memory space</li>
                     <li><i class="fas fa-check"></i> Basic trends API</li>
                 </ul>
-                <button class="btn btn-outline" onclick="openModal('signup')">Get Started Free</button>
+                <button class="btn btn-outline" onclick="handleUpgrade('free', event)">Get Started Free</button>
             </div>
             
             <div class="pricing-card glass-panel popular reveal" style="--delay: 0.2s">
@@ -293,7 +293,7 @@
                     <li><i class="fas fa-check"></i> Multi-agent collaboration</li>
                     <li><i class="fas fa-check"></i> Priority vector search</li>
                 </ul>
-                <button class="btn btn-primary" onclick="openModal('signup')">Start 14-Day Trial</button>
+                <button class="btn btn-primary" onclick="handleUpgrade('pro', event)">Start 14-Day Trial</button>
             </div>
 
             <div class="pricing-card glass-panel reveal" style="--delay: 0.3s">
@@ -308,7 +308,7 @@
                     <li><i class="fas fa-check"></i> VPC peering & SSO</li>
                     <li><i class="fas fa-check"></i> Custom ingestion pipelines</li>
                 </ul>
-                <button class="btn btn-outline">Contact Sales</button>
+                <button class="btn btn-outline" onclick="handleUpgrade('enterprise', event)">Contact Sales</button>
             </div>
         </div>
     </section>
@@ -445,5 +445,47 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        async function handleUpgrade(plan, event) {
+            const token = localStorage.getItem('riselab_token');
+            if (!token) {
+                openModal('signup');
+                return;
+            }
+
+            if (plan === 'free') {
+                window.location.href = 'dashboard.html';
+                return;
+            }
+
+            try {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = 'Processing...';
+
+                const res = await fetch('https://riselab.tech/api/stripe/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ plan })
+                });
+
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Upgrade failed');
+
+                window.location.href = data.url;
+            } catch (err) {
+                alert('Error: ' + err.message);
+                const btn = event.target;
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = 'Retry';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

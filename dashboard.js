@@ -1,7 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('riselab_token');
-    const user = JSON.parse(localStorage.getItem('riselab_user') || 'null');
-    const apiBaseUrl = 'http://localhost:4000/api';
+    let user = null;
+    try {
+        const storedUser = localStorage.getItem('riselab_user');
+        if (storedUser && storedUser !== 'undefined') {
+            user = JSON.parse(storedUser);
+        }
+    } catch (e) {
+        console.error('Failed to parse user from localStorage', e);
+    }
+    
+    const apiBaseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://localhost:4000/api' 
+        : '/api';
 
     if (!token || !user) {
         window.location.href = 'index.html';
@@ -50,16 +61,87 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch Billing Status
     async function fetchBilling() {
         try {
-            const res = await fetch('http://localhost:4000/api/billing/status', {
+            const res = await fetch(`${apiBaseUrl}/billing/status`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await res.json();
             if (res.ok) {
-                document.querySelector('.user-plan').textContent = (data.data.plan.charAt(0).toUpperCase() + data.data.plan.slice(1)) + ' Plan';
+                const plan = data.data.plan.toLowerCase();
+                document.querySelector('.user-plan').textContent = (plan.charAt(0).toUpperCase() + plan.slice(1)) + ' Plan';
+                
+                const upgradeBtn = document.getElementById('upgrade-btn');
+                if (upgradeBtn) {
+                    if (plan === 'pro' || plan === 'enterprise') {
+                        upgradeBtn.textContent = 'Manage';
+                    } else {
+                        upgradeBtn.textContent = 'Upgrade';
+                    }
+                }
             }
         } catch (err) {
             console.error('Failed to fetch billing:', err);
         }
+    }
+
+    async function handleUpgrade(plan = 'pro') {
+        const upgradeBtn = document.getElementById('upgrade-btn');
+        const originalText = upgradeBtn ? upgradeBtn.textContent : 'Upgrade';
+        
+        try {
+            if (upgradeBtn) {
+                upgradeBtn.disabled = true;
+                upgradeBtn.textContent = '...';
+            }
+
+            const res = await fetch(`${apiBaseUrl}/stripe/create-checkout-session`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ plan })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Failed to create checkout session');
+
+            // Redirect to Stripe
+            window.location.href = data.url;
+
+        } catch (err) {
+            console.error('Upgrade error:', err);
+            showNotification(err.message, 'error');
+            if (upgradeBtn) {
+                upgradeBtn.disabled = false;
+                upgradeBtn.textContent = originalText;
+            }
+        }
+    }
+
+    function showNotification(message, type = 'success') {
+        const notify = document.getElementById('stripe-notification');
+        if (!notify) return;
+        
+        notify.textContent = message;
+        notify.className = `stripe-notification ${type}`;
+        notify.style.display = 'block';
+        
+        setTimeout(() => {
+            notify.style.display = 'none';
+        }, 5000);
+    }
+
+    // Check for session_id in URL (returned from Stripe)
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('session_id')) {
+        showNotification('Successfully upgraded! Your new features are now active.');
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const upgradeBtn = document.getElementById('upgrade-btn');
+    if (upgradeBtn) {
+        upgradeBtn.addEventListener('click', () => handleUpgrade('pro'));
     }
 
     // Generate API Key

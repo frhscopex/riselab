@@ -29,7 +29,10 @@
                     <div class="avatar">DEV</div>
                     <div class="user-details">
                         <span class="user-name">Developer Name</span>
-                        <span class="user-plan">Pro Plan</span>
+                        <div class="user-plan-container">
+                            <span class="user-plan">Free Plan</span>
+                            <button id="upgrade-btn" class="upgrade-link">Upgrade</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,7 +40,10 @@
 
         <main class="dashboard-content">
             <header class="dashboard-header">
-                <h1>Overview</h1>
+                <div class="header-main">
+                    <h1>Overview</h1>
+                    <div id="stripe-notification" class="stripe-notification" style="display: none;"></div>
+                </div>
                 <div class="header-actions">
                     <button class="btn btn-outline btn-sm"><i class="fas fa-bell"></i></button>
                     <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> New Agent</button>

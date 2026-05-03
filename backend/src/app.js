@@ -10,11 +10,16 @@ const utilsRouter = require("./routes/utils");
 const keysRouter = require("./routes/keys");
 const billingRouter = require("./routes/billing");
 const authRouter = require("./routes/auth");
+const stripeRouter = require("./routes/stripe");
 const authMiddleware = require("./utils/authMiddleware");
 
 const app = express();
 
 app.use(cors());
+
+// Webhook route must come BEFORE express.json()
+app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
+
 app.use(express.json());
 
 app.get("/health", (_req, res) => {
@@ -31,5 +36,6 @@ app.use("/api/utils", utilsRouter);
 app.use("/api/keys", authMiddleware, keysRouter);
 app.use("/api/billing", authMiddleware, billingRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/stripe", stripeRouter);
 
 module.exports = app;
