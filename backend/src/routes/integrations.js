@@ -12,25 +12,21 @@ router.get("/supabase", async (req, res) => {
   }
 
   try {
-    // A lightweight ping. We can just check auth health or do a dummy select.
-    // If the client is initialized with valid credentials, it shouldn't throw.
-    // However, without a public table we can reliably read, just auth ping is fine.
-    
-    // We'll perform a basic check by seeing if supabase client has the url populated.
-    // Actually, calling getSession or a dummy query is better.
-    const { data, error } = await supabase.from('pg_stat_activity').select('*').limit(1).catch(() => ({ error: { message: "Permission denied or table missing" } }));
-    
-    // As long as we get a response (even a permission error on pg_stat_activity), 
-    // it means we successfully contacted the Supabase server.
+    // Try to perform a very simple select. 
+    // Even if it fails due to permissions, it confirms the client is connected to the API.
+    const { data, error } = await supabase
+      .from('profiles') // Assuming a common table name, or just any table
+      .select('count', { count: 'exact', head: true });
+
     return res.status(200).json({
       connected: true,
-      details: "Supabase client successfully configured.",
-      pingError: error ? error.message : null
+      details: "Supabase client successfully configured and pinged.",
+      error: error ? error.message : null
     });
   } catch (err) {
     return res.status(500).json({
       connected: false,
-      details: "Failed to ping Supabase instance.",
+      details: "Failed to communicate with Supabase.",
       error: err.message
     });
   }

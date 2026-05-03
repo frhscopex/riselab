@@ -1447,16 +1447,76 @@ footer {
 }
 
 .password-strength.strength-weak .strength-fill {
-    width: 28%;
+    width: 24%;
     background: var(--negative);
 }
 
-.password-strength.strength-medium .strength-fill {
-    width: 62%;
+.password-strength.strength-fair .strength-fill {
+    width: 44%;
     background: var(--warning);
 }
 
+.password-strength.strength-medium .strength-fill {
+    width: 44%;
+    background: var(--warning);
+}
+
+.password-strength.strength-good .strength-fill {
+    width: 64%;
+    background: #eab308;
+}
+
 .password-strength.strength-strong .strength-fill {
-    width: 100%;
+    width: 82%;
     background: var(--positive);
+}
+
+.password-strength.strength-excellent .strength-fill {
+    width: 100%;
+    background: #22c55e;
+}
+
+.password-rules {
+    margin: -0.2rem 0 0.35rem;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.34rem;
+}
+
+.password-rules li {
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    position: relative;
+    padding-left: 1.15rem;
+}
+
+.password-rules li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--text-secondary);
+}
+
+.password-rules li.passed {
+    color: var(--positive);
+}
+
+.password-rules li.passed::before {
+    content: "✓";
+    color: var(--positive);
+}
+
+.signup-consent {
+    margin: 0.15rem 0 0.2rem;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.signup-consent a {
+    color: var(--accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }

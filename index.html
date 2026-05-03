@@ -365,6 +365,12 @@
                     </div>
                     <span id="password-strength-text" class="strength-label">Weak password</span>
                 </div>
+                <ul class="password-rules" id="password-rules">
+                    <li data-rule="length">At least 10 characters</li>
+                    <li data-rule="mixed">Uppercase and lowercase letters</li>
+                    <li data-rule="number">At least one number</li>
+                    <li data-rule="symbol">At least one special symbol</li>
+                </ul>
                 <div class="oauth-group">
                     <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="google" data-loading-text="Connecting to Google...">
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -380,6 +386,12 @@
                     </button>
                 </div>
                 <div class="auth-divider"><span>or continue with email</span></div>
+                <p class="signup-consent">
+                    By creating an account, you agree to our
+                    <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a>
+                    and acknowledge our
+                    <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+                </p>
                 <div id="signup-error" class="error-msg">Something went wrong. Please try again.</div>
                 <button type="submit" class="btn btn-primary btn-large" data-loading-text="Creating account...">Create Account</button>
             </form>

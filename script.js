@@ -277,16 +277,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function evaluatePasswordStrength(value) {
-        let score = 0;
-        if (value.length >= 8) score += 1;
-        if (/[a-z]/.test(value)) score += 1;
-        if (/[A-Z]/.test(value)) score += 1;
-        if (/\d/.test(value)) score += 1;
-        if (/[^A-Za-z0-9]/.test(value)) score += 1;
+        const rules = {
+            length: value.length >= 10,
+            mixed: /[a-z]/.test(value) && /[A-Z]/.test(value),
+            number: /\d/.test(value),
+            symbol: /[^A-Za-z0-9]/.test(value),
+        };
 
-        if (score <= 2) return { className: 'strength-weak', label: 'Weak password' };
-        if (score <= 4) return { className: 'strength-medium', label: 'Medium password' };
-        return { className: 'strength-strong', label: 'Strong password' };
+        let score = 0;
+        if (rules.length) score += 35;
+        if (rules.mixed) score += 25;
+        if (rules.number) score += 20;
+        if (rules.symbol) score += 20;
+        if (value.length >= 14) score += 10;
+        score = Math.min(score, 100);
+
+        if (!value) return { className: 'strength-weak', label: 'Enter a password', score: 0, rules };
+        if (score < 35) return { className: 'strength-weak', label: 'Weak password', score, rules };
+        if (score < 55) return { className: 'strength-fair', label: 'Fair password', score, rules };
+        if (score < 75) return { className: 'strength-good', label: 'Good password', score, rules };
+        if (score < 90) return { className: 'strength-strong', label: 'Strong password', score, rules };
+        return { className: 'strength-excellent', label: 'Excellent password', score, rules };
     }
 
     async function handleOAuthClick(form, provider, errorEl) {
@@ -419,8 +430,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = signupForm.querySelector('input[type="email"]').value;
             const password = signupForm.querySelector('#signup-password').value;
             const errorEl = document.getElementById('signup-error');
+            const strength = evaluatePasswordStrength(password);
 
             try {
+                if (strength.score < 55) {
+                    throw new Error('Please choose a stronger password before creating your account.');
+                }
                 setFormLoading(signupForm, true);
                 errorEl.style.display = 'none';
 
@@ -462,9 +477,21 @@ document.addEventListener('DOMContentLoaded', () => {
     if (signupPassword && passwordStrength && passwordStrengthText) {
         const updateStrength = () => {
             const result = evaluatePasswordStrength(signupPassword.value);
-            passwordStrength.classList.remove('strength-weak', 'strength-medium', 'strength-strong');
+            passwordStrength.classList.remove('strength-weak', 'strength-fair', 'strength-good', 'strength-strong', 'strength-excellent');
             passwordStrength.classList.add(result.className);
             passwordStrengthText.textContent = result.label;
+
+            const rulesList = document.getElementById('password-rules');
+            if (rulesList) {
+                rulesList.querySelectorAll('[data-rule]').forEach((item) => {
+                    const key = item.getAttribute('data-rule');
+                    if (key && result.rules[key]) {
+                        item.classList.add('passed');
+                    } else {
+                        item.classList.remove('passed');
+                    }
+                });
+            }
         };
         signupPassword.addEventListener('input', updateStrength);
         updateStrength();
