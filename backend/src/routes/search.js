@@ -2,17 +2,28 @@ const express = require("express");
 const { Prisma } = require("@prisma/client");
 const prisma = require("../utils/prisma");
 const { embedText, toVectorLiteral } = require("../utils/embedding");
+const {
+  getTrimmedString,
+  parseBoundedInt,
+  sendError,
+} = require("../utils/http");
 
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const q = typeof req.query.q === "string" ? req.query.q.trim() : "";
-  const topKRaw = Number(req.query.limit || 5);
-  const topK = Number.isFinite(topKRaw) ? Math.min(Math.max(topKRaw, 1), 20) : 5;
+  const q = getTrimmedString(req.query.q);
+  const topK = parseBoundedInt(req.query.limit, {
+    defaultValue: 5,
+    min: 1,
+    max: 20,
+  });
 
   if (!q) {
-    return res.status(400).json({
+    return sendError(res, {
+      status: 400,
       error: "q query parameter is required.",
+      code: "SEARCH_QUERY_REQUIRED",
+      hint: "Use /api/search?q=your+query&limit=5",
     });
   }
 
@@ -36,9 +47,9 @@ router.get("/", async (req, res) => {
       query: q,
       limit: topK,
       mode: "vector",
-      results: rows
+      results: rows,
     });
-  } catch (error) {
+  } catch (_error) {
     const keywordPattern = `%${q}%`;
 
     try {
@@ -60,12 +71,14 @@ router.get("/", async (req, res) => {
         query: q,
         limit: topK,
         mode: "keyword-fallback",
-        results: fallbackRows
+        results: fallbackRows,
       });
     } catch (fallbackError) {
-      return res.status(500).json({
+      return sendError(res, {
+        status: 500,
         error: "Semantic search failed.",
-        details: fallbackError.message
+        code: "SEARCH_FAILED",
+        details: fallbackError.message,
       });
     }
   }
@@ -73,15 +86,19 @@ router.get("/", async (req, res) => {
 
 router.use((err, _req, res, _next) => {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
-    return res.status(500).json({
+    return sendError(res, {
+      status: 500,
       error: "Semantic search failed.",
-      details: err.message
+      code: "SEARCH_PRISMA_ERROR",
+      details: err.message,
     });
   }
 
-  return res.status(500).json({
+  return sendError(res, {
+    status: 500,
     error: "Unexpected search error.",
-    details: err.message
+    code: "SEARCH_UNEXPECTED_ERROR",
+    details: err.message,
   });
 });
 

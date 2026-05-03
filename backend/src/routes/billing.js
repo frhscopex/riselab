@@ -1,74 +1,78 @@
 const express = require("express");
 const prisma = require("../utils/prisma");
+const { getTrimmedString, sendError, sendSuccess } = require("../utils/http");
 
 const router = express.Router();
+const VALID_PLANS = new Set(["free", "pro", "enterprise"]);
 
-// GET /api/billing/status - Get current plan status for authenticated user
 router.get("/status", async (req, res) => {
   const userId = req.user && req.user.userId;
 
   if (!userId) {
-    return res.status(401).json({
-      error: "Unauthorized: user authentication required."
+    return sendError(res, {
+      status: 401,
+      error: "Unauthorized: user authentication required.",
+      code: "BILLING_AUTH_REQUIRED",
     });
   }
 
   try {
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { plan: true }
+      select: { plan: true },
     });
 
-    res.status(200).json({ 
-      data: {
-        userId,
-        plan: user ? user.plan : "free"
-      }
+    return sendSuccess(res, {
+      userId,
+      plan: user ? user.plan : "free",
     });
   } catch (error) {
-    res.status(500).json({
+    return sendError(res, {
+      status: 500,
       error: "Failed to fetch billing status.",
-      details: error.message
+      code: "BILLING_STATUS_FAILED",
+      details: error.message,
     });
   }
 });
 
-// POST /api/billing/subscribe - Update a user's subscription plan (Manual/Internal use)
 router.post("/subscribe", async (req, res) => {
-  const { plan } = req.body;
+  const plan = getTrimmedString(req.body?.plan).toLowerCase();
   const userId = req.user && req.user.userId;
 
-  const validPlans = ["free", "pro", "enterprise"];
-
   if (!userId) {
-    return res.status(401).json({
-      error: "Unauthorized: user authentication required."
+    return sendError(res, {
+      status: 401,
+      error: "Unauthorized: user authentication required.",
+      code: "BILLING_AUTH_REQUIRED",
     });
   }
 
-  if (!plan || !validPlans.includes(plan.toLowerCase())) {
-    return res.status(400).json({
-      error: "A valid plan (free, pro, enterprise) is required."
+  if (!VALID_PLANS.has(plan)) {
+    return sendError(res, {
+      status: 400,
+      error: "A valid plan (free, pro, enterprise) is required.",
+      code: "BILLING_PLAN_INVALID",
     });
   }
 
   try {
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { plan: plan.toLowerCase() }
+      data: { plan },
     });
 
-    res.status(200).json({ 
-      data: {
-        userId,
-        plan: updatedUser.plan,
-        message: `Successfully updated to the ${plan} plan!`
-      }
+    return sendSuccess(res, {
+      userId,
+      plan: updatedUser.plan,
+      message: `Successfully updated to the ${updatedUser.plan} plan!`,
     });
   } catch (error) {
-    res.status(500).json({
+    return sendError(res, {
+      status: 500,
       error: "Failed to update subscription.",
-      details: error.message
+      code: "BILLING_SUBSCRIBE_FAILED",
+      details: error.message,
     });
   }
 });

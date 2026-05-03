@@ -1,24 +1,25 @@
 const express = require("express");
-
 const router = express.Router();
 
 router.get("/", (_req, res) => {
-  res.status(200).json({
-    syncedAt: new Date().toISOString(),
+  const timestamp = new Date().toISOString();
+
+  const payload = {
+    syncedAt: timestamp,
     fleet: [
       {
         id: "athena",
         name: "Athena",
         status: "online",
         health: "good",
-        lastHeartbeat: new Date().toISOString(),
+        lastHeartbeat: timestamp,
       },
       {
         id: "orion",
         name: "Orion",
         status: "online",
         health: "good",
-        lastHeartbeat: new Date().toISOString(),
+        lastHeartbeat: timestamp,
       },
     ],
     memoryStats: {
@@ -30,7 +31,9 @@ router.get("/", (_req, res) => {
       pendingResearchTasks: 2,
       pendingMemoryWrites: 1,
     },
-  });
+  };
+
+  return res.status(200).json({ ...payload, data: payload });
 });
 
 module.exports = router;

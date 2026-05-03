@@ -10,18 +10,22 @@ const utilsRouter = require("./routes/utils");
 const keysRouter = require("./routes/keys");
 const billingRouter = require("./routes/billing");
 const authRouter = require("./routes/auth");
-const stripeRouter = require("./routes/stripe");
+
 const authMiddleware = require("./utils/authMiddleware");
 const integrationsRouter = require("./routes/integrations");
+const { sendError } = require("./utils/http");
 
 const app = express();
 
 app.use(cors());
 
-// Webhook route must come BEFORE express.json()
-app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
 
-app.use(express.json());
+
+app.use(
+  express.json({
+    limit: "1mb",
+  })
+);
 
 app.get("/health", (_req, res) => {
   res.status(200).json({ status: "ok" });
@@ -37,13 +41,38 @@ app.use("/api/utils", utilsRouter);
 app.use("/api/keys", authMiddleware, keysRouter);
 app.use("/api/billing", authMiddleware, billingRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/stripe", stripeRouter);
+
 app.use("/api/integrations", integrationsRouter);
 
+app.use("/api", (_req, res) =>
+  sendError(res, {
+    status: 404,
+    error: "API route not found.",
+    code: "ROUTE_NOT_FOUND",
+    hint: "Check the endpoint path and HTTP method.",
+  })
+);
+
 app.use((err, _req, res, _next) => {
+  const isJsonSyntaxError =
+    err instanceof SyntaxError &&
+    err.status === 400 &&
+    Object.prototype.hasOwnProperty.call(err, "body");
+
+  if (isJsonSyntaxError) {
+    return sendError(res, {
+      status: 400,
+      error: "Invalid JSON payload.",
+      code: "INVALID_JSON",
+      hint: "Ensure request body is valid JSON and Content-Type is application/json.",
+    });
+  }
+
   console.error("Unhandled API error:", err);
-  res.status(500).json({
+  return sendError(res, {
+    status: err?.status || 500,
     error: "Internal server error",
+    code: "INTERNAL_ERROR",
     details: err?.message || "Unexpected failure",
   });
 });

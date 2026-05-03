@@ -1,58 +1,71 @@
 const express = require("express");
 const db = require("../db");
 const crypto = require("crypto");
+const { getTrimmedString, sendError, sendSuccess } = require("../utils/http");
 
 const router = express.Router();
 
-// POST /api/keys/generate - Generate a new API Key for the authenticated user
 router.post("/generate", async (req, res) => {
-  const { name } = req.body;
+  const name = getTrimmedString(req.body?.name);
   const userId = req.user && req.user.userId;
 
   if (!userId) {
-    return res.status(401).json({
-      error: "Unauthorized: user authentication required."
+    return sendError(res, {
+      status: 401,
+      error: "Unauthorized: user authentication required.",
+      code: "KEYS_AUTH_REQUIRED",
     });
   }
 
   if (!name) {
-    return res.status(400).json({
-      error: "name (for the agent/key) is required."
+    return sendError(res, {
+      status: 400,
+      error: "name (for the agent/key) is required.",
+      code: "KEYS_NAME_REQUIRED",
+    });
+  }
+
+  if (name.length < 3 || name.length > 100) {
+    return sendError(res, {
+      status: 400,
+      error: "name must be between 3 and 100 characters.",
+      code: "KEYS_NAME_INVALID",
     });
   }
 
   try {
-    // 1. Create the Agent entry first
     const agent = await db.agent.create({
       data: {
-        name: name,
-        userId
-      }
+        name,
+        userId,
+      },
     });
 
-    // 2. Generate a unique key
     const apiKeyStr = `rl_${crypto.randomBytes(16).toString("hex")}`;
 
-    // 3. Save to database
     await db.apiKey.create({
       data: {
         key: apiKeyStr,
-        agentId: agent.id
-      }
+        agentId: agent.id,
+      },
     });
-    
-    res.status(201).json({ 
-      data: {
+
+    return sendSuccess(
+      res,
+      {
         userId,
         agentId: agent.id,
         apiKey: apiKeyStr,
-        message: "Key generated successfully. Store it safely!"
-      }
-    });
+        message: "Key generated successfully. Store it safely!",
+      },
+      201
+    );
   } catch (error) {
-    res.status(500).json({
-      error: "Failed to generate API Key.",
-      details: error.message
+    return sendError(res, {
+      status: 500,
+      error: "Failed to generate API key.",
+      code: "KEYS_GENERATE_FAILED",
+      details: error.message,
     });
   }
 });

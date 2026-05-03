@@ -1,60 +1,40 @@
 const express = require("express");
-const db = require("../db");
+const supabase = require("../utils/supabase");
+const { sendError } = require("../utils/http");
 
 const router = express.Router();
 
-router.get("/trends", async (req, res) => {
-  const limitRaw = Number(req.query.limit || 10);
-  const limit = Number.isFinite(limitRaw) ? Math.min(Math.max(limitRaw, 1), 50) : 10;
+router.get("/supabase", async (_req, res) => {
+  if (!supabase) {
+    const payload = {
+      connected: false,
+      details: "Supabase client not initialized. Check your environment variables.",
+      error: null,
+    };
+
+    return res.status(200).json({ ...payload, data: payload });
+  }
 
   try {
-    const papers = await db.knowledge.findMany({
-      orderBy: { date: "desc" },
-      take: limit,
-      select: {
-        id: true,
-        title: true,
-        summary: true,
-        source: true,
-        date: true,
-      },
-    });
+    const { error } = await supabase
+      .from("profiles")
+      .select("count", { count: "exact", head: true });
 
-    const nowMs = Date.now();
-    const data = papers.map((paper) => {
-      const ageMs = nowMs - new Date(paper.date).getTime();
-      const ageDays = Math.max(ageMs / (1000 * 60 * 60 * 24), 0);
-      const velocityScore = Number((1 / (1 + ageDays)).toFixed(4));
+    const payload = {
+      connected: true,
+      details: "Supabase client successfully configured and pinged.",
+      error: error ? error.message : null,
+    };
 
-      return {
-        ...paper,
-        velocityScore,
-      };
-    });
-
-    return res.status(200).json({ data });
-  } catch (error) {
-    return res.status(500).json({
-      error: "Failed to fetch trends.",
-      details: error.message,
+    return res.status(200).json({ ...payload, data: payload });
+  } catch (err) {
+    return sendError(res, {
+      status: 500,
+      error: "Failed to communicate with Supabase.",
+      code: "AWARENESS_SUPABASE_FAILED",
+      details: err.message,
     });
   }
-});
-
-router.get("/contradictions", async (req, res) => {
-  const { agentId } = req.query;
-
-  if (!agentId || typeof agentId !== "string") {
-    return res.status(400).json({
-      error: "agentId query parameter is required.",
-    });
-  }
-
-  // TODO: contradiction detection logic will be finalized in the next phase.
-  return res.status(200).json({
-    agentId,
-    conflicts: [],
-  });
 });
 
 module.exports = router;

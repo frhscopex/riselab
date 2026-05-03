@@ -1,29 +1,48 @@
 const express = require("express");
 const db = require("../db");
 const { generateCitation } = require("../services/utilityService");
+const { getTrimmedString, sendError, sendSuccess } = require("../utils/http");
 
 const router = express.Router();
+const VALID_CITATION_FORMATS = new Set(["apa", "mla", "bibtex"]);
 
-// GET /api/utils/cite/:id - Get a citation for a paper
 router.get("/cite/:id", async (req, res) => {
-  const { id } = req.params;
-  const { format } = req.query;
+  const id = getTrimmedString(req.params.id);
+  const requestedFormat = getTrimmedString(req.query.format || "apa").toLowerCase();
+
+  if (!id) {
+    return sendError(res, {
+      status: 400,
+      error: "Citation id is required.",
+      code: "UTILS_CITE_ID_REQUIRED",
+    });
+  }
+
+  const format = VALID_CITATION_FORMATS.has(requestedFormat)
+    ? requestedFormat
+    : "apa";
 
   try {
     const paper = await db.knowledge.findUnique({
-      where: { id }
+      where: { id },
     });
 
     if (!paper) {
-      return res.status(404).json({ error: "Paper not found." });
+      return sendError(res, {
+        status: 404,
+        error: "Paper not found.",
+        code: "UTILS_CITE_NOT_FOUND",
+      });
     }
 
     const citation = generateCitation(paper, format);
-    res.status(200).json({ data: citation });
+    return sendSuccess(res, citation, 200, { format });
   } catch (error) {
-    res.status(500).json({
+    return sendError(res, {
+      status: 500,
       error: "Failed to generate citation.",
-      details: error.message
+      code: "UTILS_CITE_FAILED",
+      details: error.message,
     });
   }
 });

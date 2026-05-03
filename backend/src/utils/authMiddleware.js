@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const prisma = require("./prisma"); // Use the local prisma util
+const prisma = require("./prisma");
+const { sendError } = require("./http");
 
 const JWT_SECRET = process.env.JWT_SECRET || "riselab-super-secret-key";
 
@@ -7,19 +8,39 @@ async function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
   const apiKey = req.header("x-api-key");
 
-  // 1. Check for JWT (Bearer Token)
   if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.slice(7).trim();
+
+    if (!token) {
+      return sendError(res, {
+        status: 401,
+        error: "Bearer token is missing.",
+        code: "TOKEN_MISSING",
+      });
+    }
+
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
-      req.user = decoded; // { userId: ... }
+      if (!decoded?.userId) {
+        return sendError(res, {
+          status: 401,
+          error: "Invalid token payload.",
+          code: "TOKEN_INVALID",
+        });
+      }
+
+      req.user = decoded;
+      req.auth = { type: "jwt" };
       return next();
-    } catch (error) {
-      return res.status(401).json({ error: "Invalid or expired token." });
+    } catch (_error) {
+      return sendError(res, {
+        status: 401,
+        error: "Invalid or expired token.",
+        code: "TOKEN_INVALID",
+      });
     }
   }
 
-  // 2. Check for API Key
   if (apiKey) {
     try {
       const keyEntry = await prisma.apiKey.findUnique({
@@ -27,17 +48,32 @@ async function authMiddleware(req, res, next) {
         include: { agent: true },
       });
 
-      if (keyEntry) {
-        req.agent = keyEntry.agent;
-        return next();
+      if (!keyEntry) {
+        return sendError(res, {
+          status: 401,
+          error: "Invalid API key.",
+          code: "API_KEY_INVALID",
+        });
       }
+
+      req.agent = keyEntry.agent;
+      req.auth = { type: "api-key" };
+      return next();
     } catch (error) {
       console.error("Auth Error:", error);
+      return sendError(res, {
+        status: 500,
+        error: "Failed to validate API key.",
+        code: "AUTH_VALIDATION_FAILED",
+      });
     }
-    return res.status(401).json({ error: "Invalid API key." });
   }
 
-  return res.status(401).json({ error: "Authentication required (JWT or API Key)." });
+  return sendError(res, {
+    status: 401,
+    error: "Authentication required (JWT or API key).",
+    code: "AUTH_REQUIRED",
+  });
 }
 
 module.exports = authMiddleware;

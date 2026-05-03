@@ -1,28 +1,32 @@
-const fs = require("fs");
-const path = require("path");
 const db = require("./src/db");
-const { embedText, toVectorLiteral } = require("./src/utils/embedding");
+const { embedText } = require("./src/utils/embedding");
 
-async function ensureSchema() {
-  const schemaPath = path.join(__dirname, "prisma", "sql", "schema.sql");
-  const sql = fs.readFileSync(schemaPath, "utf8");
-  await db.query(sql);
+async function ensureDemoUser() {
+  return db.user.upsert({
+    where: { email: "demo@riselab.local" },
+    update: {},
+    create: {
+      email: "demo@riselab.local",
+      name: "RiseLab Demo",
+      passwordHash: "seeded-account",
+    },
+    select: { id: true },
+  });
 }
 
-async function seedAgents() {
-  const agentRows = [
-    ["Athena", "riselab-core"],
-    ["Orion", "research-ops"],
-  ];
-
+async function seedAgents(userId) {
+  const agentRows = ["Athena", "Orion"];
   const inserted = [];
-  for (const [name, owner] of agentRows) {
-    const { rows } = await db.query(
-      "INSERT INTO agent (name, owner) VALUES ($1, $2) RETURNING id, name, owner, created_at",
-      [name, owner]
-    );
-    inserted.push(rows[0]);
+
+  for (const name of agentRows) {
+    const agent = await db.agent.create({
+      data: { name, userId },
+      select: { id: true, name: true, userId: true, createdAt: true },
+    });
+
+    inserted.push(agent);
   }
+
   return inserted;
 }
 
@@ -39,15 +43,24 @@ async function seedMemories(agentIds) {
   for (let i = 0; i < notes.length; i += 1) {
     const note = notes[i];
     const agentId = agentIds[i % agentIds.length];
-    const vector = toVectorLiteral(embedText(note));
-    const { rows } = await db.query(
-      `INSERT INTO memory (agent_id, content, embedding_vector)
-       VALUES ($1::uuid, $2, $3::vector)
-       RETURNING id, agent_id, content, created_at`,
-      [agentId, note, vector]
-    );
-    inserted.push(rows[0]);
+
+    const row = await db.memory.create({
+      data: {
+        agentId,
+        content: note,
+        embeddingVector: JSON.stringify(embedText(note)),
+      },
+      select: {
+        id: true,
+        agentId: true,
+        content: true,
+        createdAt: true,
+      },
+    });
+
+    inserted.push(row);
   }
+
   return inserted;
 }
 
@@ -83,58 +96,39 @@ async function seedKnowledge() {
       source: "ML Notes",
       date: "2026-01-14T13:45:00Z",
     },
-    {
-      title: "Sparse + dense search fusion",
-      summary: "Reciprocal rank fusion improves answer grounding quality.",
-      source: "Search Today",
-      date: "2026-05-01T16:00:00Z",
-    },
-    {
-      title: "Latency-aware embedding pipelines",
-      summary: "Batching and async queues reduce p95 embed latency.",
-      source: "Backend Digest",
-      date: "2026-02-10T12:10:00Z",
-    },
-    {
-      title: "Knowledge graph linking for agents",
-      summary: "Entity linking improves cross-document memory recall.",
-      source: "Graph Monthly",
-      date: "2026-03-02T07:20:00Z",
-    },
-    {
-      title: "Evaluation rubric for agent retrieval",
-      summary: "Defines faithfulness, relevance, and freshness metrics.",
-      source: "Research Ops",
-      date: "2026-04-15T19:05:00Z",
-    },
-    {
-      title: "Prompt contracts for multi-agent systems",
-      summary: "Structured handoffs reduce coordination regressions.",
-      source: "Engineering Papers",
-      date: "2026-04-25T14:40:00Z",
-    },
   ];
 
   const inserted = [];
   for (const item of papers) {
-    const vector = toVectorLiteral(embedText(`${item.title} ${item.summary}`));
-    const { rows } = await db.query(
-      `INSERT INTO knowledge (title, summary, source, date, embedding_vector)
-       VALUES ($1, $2, $3, $4::timestamptz, $5::vector)
-       RETURNING id, title, source, date, created_at`,
-      [item.title, item.summary, item.source, item.date, vector]
-    );
-    inserted.push(rows[0]);
+    const row = await db.knowledge.create({
+      data: {
+        title: item.title,
+        summary: item.summary,
+        source: item.source,
+        date: new Date(item.date),
+        embeddingVector: JSON.stringify(embedText(`${item.title} ${item.summary}`)),
+      },
+      select: {
+        id: true,
+        title: true,
+        source: true,
+        date: true,
+        createdAt: true,
+      },
+    });
+
+    inserted.push(row);
   }
+
   return inserted;
 }
 
 async function run() {
   try {
-    await ensureSchema();
-    await db.query("TRUNCATE TABLE memory, knowledge, agent CASCADE");
+    await db.$executeRawUnsafe('TRUNCATE TABLE "memory", "knowledge", "api_key", "agent" CASCADE');
 
-    const agents = await seedAgents();
+    const demoUser = await ensureDemoUser();
+    const agents = await seedAgents(demoUser.id);
     const memories = await seedMemories(agents.map((a) => a.id));
     const knowledge = await seedKnowledge();
 

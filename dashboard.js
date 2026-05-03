@@ -19,6 +19,38 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
+    function clearSessionAndRedirect() {
+        localStorage.removeItem('riselab_token');
+        localStorage.removeItem('riselab_user');
+        window.location.href = 'index.html';
+    }
+
+    async function parseApiResponse(res) {
+        const raw = await res.text();
+        let body = {};
+
+        if (raw) {
+            try {
+                body = JSON.parse(raw);
+            } catch (_error) {
+                body = {
+                    error: `Server returned an invalid response (HTTP ${res.status}).`,
+                    raw,
+                };
+            }
+        }
+
+        if (!res.ok) {
+            const message = body.error || body.message || `Request failed (HTTP ${res.status})`;
+            const err = new Error(message);
+            err.status = res.status;
+            err.body = body;
+            throw err;
+        }
+
+        return body;
+    }
+
     function setFormLoading(form, isLoading) {
         const buttons = form.querySelectorAll('button');
         buttons.forEach((btn) => {
@@ -64,9 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${apiBaseUrl}/billing/status`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const data = await res.json();
-            if (res.ok) {
-                const plan = data.data.plan.toLowerCase();
+            const data = await parseApiResponse(res);
+            if (data && data.data) {
+                const plan = (data.data.plan || 'free').toLowerCase();
                 document.querySelector('.user-plan').textContent = (plan.charAt(0).toUpperCase() + plan.slice(1)) + ' Plan';
                 
                 const upgradeBtn = document.getElementById('upgrade-btn');
@@ -80,6 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } catch (err) {
             console.error('Failed to fetch billing:', err);
+            if (err.status === 401) {
+                showNotification('Your session expired. Please sign in again.', 'error');
+                clearSessionAndRedirect();
+                return;
+            }
+            showNotification('Unable to load billing status right now.', 'error');
         }
     }
 
@@ -102,8 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ plan })
             });
 
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || 'Failed to create checkout session');
+            const data = await parseApiResponse(res);
 
             // Redirect to Stripe
             window.location.href = data.url;
@@ -164,8 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ name })
                 });
 
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error);
+                const data = await parseApiResponse(res);
                 prependApiKeyRow(name, data.data.apiKey);
 
             } catch (err) {
@@ -178,8 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Logout
-    const logoutBtn = document.querySelector('.nav-item i.fa-cog').parentElement; // Temp: use settings as logout for now
-    // Actually let's add a real logout in the sidebar footer
+    // Add a real logout in the sidebar footer
     const sidebarFooter = document.querySelector('.sidebar-footer');
     const logoutLink = document.createElement('a');
     logoutLink.href = '#';
@@ -272,8 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${apiBaseUrl}/memory?limit=5`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const payload = await res.json();
-            if (!res.ok) throw new Error(payload.error || 'Failed to load memory logs.');
+            const payload = await parseApiResponse(res);
 
             const items = payload.data || [];
             if (!items.length) {
@@ -320,8 +354,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${apiBaseUrl}/feed`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const payload = await res.json();
-            if (!res.ok) throw new Error(payload.error || 'Failed to load feed.');
+            const payload = await parseApiResponse(res);
             renderKnowledgeCards(payload.data || []);
         } catch (_error) {
             knowledgeResults.innerHTML = '<div class="knowledge-empty">Knowledge feed is offline.</div>';
@@ -334,8 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const res = await fetch(`${apiBaseUrl}/search?q=${encodeURIComponent(query)}&limit=8`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            const payload = await res.json();
-            if (!res.ok) throw new Error(payload.error || 'Search failed.');
+            const payload = await parseApiResponse(res);
             renderKnowledgeCards(payload.results || []);
         } catch (_error) {
             knowledgeResults.innerHTML = '<div class="knowledge-empty">Search is currently unavailable.</div>';

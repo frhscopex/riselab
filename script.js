@@ -14,7 +14,29 @@ if (typeof firebase !== 'undefined') {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const AUTH_API_BASE = window.RISELAB_API_BASE || (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:4000' : '');
+    const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    const AUTH_API_BASE = window.RISELAB_API_BASE || (isLocalHost ? 'http://localhost:4000' : window.location.origin);
+    const PAGE_LINKS = {
+        pricing: isLocalHost ? 'pricing.html' : '/pricing',
+        home: isLocalHost ? 'index.html' : '/',
+    };
+
+    if (isLocalHost) {
+        const localRouteMap = {
+            '/': 'index.html',
+            '/pricing': 'pricing.html',
+            '/terms': 'terms.html',
+            '/privacy': 'privacy.html',
+            '/refund': 'refund.html',
+            '/dashboard': 'dashboard.html',
+        };
+
+        document.querySelectorAll('a[href]').forEach((link) => {
+            const href = link.getAttribute('href');
+            if (!href || !(href in localRouteMap)) return;
+            link.setAttribute('href', localRouteMap[href]);
+        });
+    }
     
     // Scroll reveal animation
     const revealElements = document.querySelectorAll('.reveal');
@@ -60,6 +82,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // API Playground Logic
+    async function parseApiResponse(response) {
+        const raw = await response.text();
+        let data = {};
+
+        if (raw) {
+            try {
+                data = JSON.parse(raw);
+            } catch (_error) {
+                data = {
+                    error: `Endpoint returned non-JSON response (HTTP ${response.status}).`,
+                    raw,
+                };
+            }
+        }
+
+        if (!response.ok) {
+            const err = new Error(data.error || data.message || `Request failed with status ${response.status}`);
+            err.status = response.status;
+            err.body = data;
+            throw err;
+        }
+
+        return data;
+    }
+
     const apiData = {
         feed: {
             title: "Response: 200 OK",
@@ -112,32 +159,21 @@ document.addEventListener('DOMContentLoaded', () => {
             
             try {
                 let response;
-                const baseUrl = 'https://riselab.tech/api';
-                
+                const baseUrl = window.RISELAB_PLAYGROUND_API_BASE || (isLocalHost ? 'http://localhost:4000/api' : `${window.location.origin}/api`);
+
                 if (endpointKey === 'feed') {
-                    response = await fetch(`${baseUrl}/feed`);
+                    response = await fetch(`${baseUrl}/feed?limit=1`);
                 } else if (endpointKey === 'search') {
-                    response = await fetch(`${baseUrl}/search`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ query: "how to handle stale context?" })
-                    });
+                    response = await fetch(`${baseUrl}/search?q=${encodeURIComponent('stale context')}&limit=3`);
                 } else if (endpointKey === 'memory') {
-                    response = await fetch(`${baseUrl}/memory`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ 
-                            agent_id: "agt_8f72c1",
-                            content: "User prefers concise answers without bullet points." 
-                        })
-                    });
+                    response = await fetch(`${baseUrl}/memory?limit=1`);
+                } else if (endpointKey === 'sync') {
+                    response = await fetch(`${baseUrl}/sync`);
                 } else {
                     throw new Error("No backend route for this endpoint yet");
                 }
 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const responseData = await response.json();
+                const responseData = await parseApiResponse(response);
                 
                 // Success from backend
                 titleBlock.textContent = `Response: ${response.status} ${response.statusText || 'OK'}`;
@@ -215,7 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.innerHTML = `
                     <a href="#features">Features</a>
                     <a href="#comparison">Compare</a>
-                    <a href="/pricing">Pricing</a>
+                    <a href="${PAGE_LINKS.pricing}">Pricing</a>
                     <a href="#api">API</a>
                     <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
                     <a href="#" id="logout-btn" class="btn btn-outline">Logout</a>
@@ -224,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (getStartedBtn) {
                 getStartedBtn.textContent = 'View Pricing';
-                getStartedBtn.href = '/pricing';
+                getStartedBtn.href = PAGE_LINKS.pricing;
                 getStartedBtn.onclick = null;
             }
         } else {
@@ -233,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 navLinks.innerHTML = `
                     <a href="#features">Features</a>
                     <a href="#comparison">Compare</a>
-                    <a href="/pricing">Pricing</a>
+                    <a href="${PAGE_LINKS.pricing}">Pricing</a>
                     <a href="#api">API</a>
                     <a href="#" class="btn btn-outline" onclick="openModal('login')">Sign In</a>
                     <a href="#" class="btn btn-primary" onclick="openModal('signup')">Get Started</a>
@@ -241,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             if (getStartedBtn) {
                 getStartedBtn.textContent = 'View Pricing';
-                getStartedBtn.href = '/pricing';
+                getStartedBtn.href = PAGE_LINKS.pricing;
                 getStartedBtn.onclick = null;
             }
         }
@@ -329,16 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ idToken })
             });
 
-            const raw = await res.text();
-            let data = {};
-            if (raw) {
-                try {
-                    data = JSON.parse(raw);
-                } catch (_error) {
-                    throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
-                }
-            }
-            if (!res.ok) throw new Error(data.error || 'Social login failed');
+            const data = await parseApiResponse(res);
 
             // 3. Save session and redirect
             localStorage.setItem('riselab_token', data.token);
@@ -389,16 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ email, password })
                 });
 
-                const raw = await res.text();
-                let data = {};
-                if (raw) {
-                    try {
-                        data = JSON.parse(raw);
-                    } catch (_error) {
-                        throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
-                    }
-                }
-                if (!res.ok) throw new Error(data.error || 'Login failed');
+                const data = await parseApiResponse(res);
 
                 localStorage.setItem('riselab_token', data.token);
                 if (data.user) {
@@ -445,16 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ name, email, password })
                 });
 
-                const raw = await res.text();
-                let data = {};
-                if (raw) {
-                    try {
-                        data = JSON.parse(raw);
-                    } catch (_error) {
-                        throw new Error(`Auth endpoint returned non-JSON response (HTTP ${res.status}).`);
-                    }
-                }
-                if (!res.ok) throw new Error(data.error || 'Registration failed');
+                const data = await parseApiResponse(res);
 
                 localStorage.setItem('riselab_token', data.token);
                 if (data.user) {
