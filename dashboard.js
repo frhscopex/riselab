@@ -291,8 +291,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <span class="key-value" data-full-key="${fullKey}">${masked}</span>
             </div>
             <div class="key-actions">
-                <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
+                <button class="action-btn copy-key-btn" aria-label="Copy API key" title="Copy API key"><i class="fas fa-copy"></i></button>
+                <button class="action-btn danger" aria-label="Delete API key" title="Delete API key"><i class="fas fa-trash"></i></button>
             </div>
         `;
 
