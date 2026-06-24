@@ -45,7 +45,7 @@
                     <div id="stripe-notification" class="stripe-notification" style="display: none;"></div>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-outline btn-sm"><i class="fas fa-bell"></i></button>
+                    <button class="btn btn-outline btn-sm" aria-label="Notifications" title="Notifications"><i class="fas fa-bell"></i></button>
                     <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> New Agent</button>
                 </div>
             </header>
@@ -90,8 +90,8 @@
                                 <span class="key-value" data-full-key="rl_prod_9fa2ba3c3f9e8f0f5bd10a878x2">rl_prod_*********************8x2</span>
                             </div>
                             <div class="key-actions">
-                                <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn copy-key-btn" aria-label="Copy API key" title="Copy API key"><i class="fas fa-copy"></i></button>
+                                <button class="action-btn danger" aria-label="Delete API key" title="Delete API key"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                         <div class="api-key-item">
@@ -100,8 +100,8 @@
                                 <span class="key-value" data-full-key="rl_test_1a5ce21aa8f35c2d6cd99db59a4">rl_test_*********************9a4</span>
                             </div>
                             <div class="key-actions">
-                                <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
+                                <button class="action-btn copy-key-btn" aria-label="Copy API key" title="Copy API key"><i class="fas fa-copy"></i></button>
+                                <button class="action-btn danger" aria-label="Delete API key" title="Delete API key"><i class="fas fa-trash"></i></button>
                             </div>
                         </div>
                     </div>
@@ -135,7 +135,7 @@
 
     <div id="dashboard-login-modal" class="modal-overlay">
         <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeDashboardAuthModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <button class="modal-close" onclick="closeDashboardAuthModals()" aria-label="Close modal" title="Close modal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
             <div class="modal-header">
                 <h2>Sign In Again</h2>
                 <p>Your session needs verification</p>
@@ -172,7 +172,7 @@
 
     <div id="dashboard-signup-modal" class="modal-overlay">
         <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeDashboardAuthModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            <button class="modal-close" onclick="closeDashboardAuthModals()" aria-label="Close modal" title="Close modal"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
             <div class="modal-header">
                 <h2>Create an Account</h2>
                 <p>Connect providers or sign up with email</p>
