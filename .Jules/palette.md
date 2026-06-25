@@ -1,0 +1,3 @@
+## 2025-02-27 - Added Missing ARIA Labels to Icon-Only Buttons
+**Learning:** Found a recurring pattern in the frontend architecture where icon-only buttons (like notification bells, modal close icons, and trash/delete buttons) were missing `aria-label` attributes. This issue appeared in static HTML files (`index.html`, `dashboard.html`) as well as in dynamically injected HTML strings within JavaScript files (`dashboard.js`).
+**Action:** Always ensure that any button containing only an icon (SVG or font icon) includes an explicit `aria-label` attribute to remain accessible to screen readers, and remember to check JavaScript template literals where dynamic HTML is rendered.
