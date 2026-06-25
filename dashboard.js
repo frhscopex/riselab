@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div class="key-actions">
                 <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
+                <button aria-label="Delete API key" class="action-btn danger"><i class="fas fa-trash"></i></button>
             </div>
         `;
 
