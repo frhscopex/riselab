@@ -1,0 +1,3 @@
+## 2026-06-30 - Widespread Missing ARIA Labels on Icon-only Buttons
+**Learning:** Found an accessibility issue pattern specific to this app's components: icon-only buttons (such as `.action-btn` and `.modal-close`) systematically lacked ARIA labels across both static HTML files (`dashboard.html`, `index.html`) and dynamically generated template strings (`dashboard.js`).
+**Action:** When adding new icon-only interactive elements in the UI, especially common patterns like close buttons or action buttons in lists, always enforce the addition of explicit `aria-label` attributes to ensure screen reader accessibility.
