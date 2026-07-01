@@ -1,0 +1,3 @@
+## 2026-07-01 - Inconsistent ARIA Labels on Icon-Only Buttons
+**Learning:** An accessibility issue pattern exists in this app's components where icon-only buttons lack ARIA labels. Interestingly, this omission is inconsistent—some buttons (like 'Copy API key') have labels, while adjacent buttons (like 'Delete API key') or utility buttons (like 'Notifications' and modal 'Close') do not. This pattern appears across both static HTML files and dynamic JavaScript template strings.
+**Action:** When adding or auditing icon-only buttons, systematically check both static HTML files and dynamic JS template strings to ensure ARIA labels are applied to all interactive elements without visible text.

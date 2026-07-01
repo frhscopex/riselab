@@ -1,0 +1,6 @@
+127.0.0.1 - - [01/Jul/2026 19:21:41] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [01/Jul/2026 19:21:41] "GET /script.js HTTP/1.1" 200 -
+127.0.0.1 - - [01/Jul/2026 19:21:41] "GET /index.css HTTP/1.1" 200 -
+127.0.0.1 - - [01/Jul/2026 19:21:45] "GET /dashboard.html HTTP/1.1" 200 -
+127.0.0.1 - - [01/Jul/2026 19:21:45] "GET /dashboard.css HTTP/1.1" 200 -
+127.0.0.1 - - [01/Jul/2026 19:21:45] "GET /dashboard.js HTTP/1.1" 200 -
