@@ -1,0 +1,3 @@
+## 2023-10-27 - Icon Accessibility & Keyboard Focus Polish
+**Learning:** Across the app, there were several icon-only buttons (like modal close buttons, notification bells, and trash icons) that lacked `aria-label` attributes, rendering them invisible to screen readers. In addition, there was a lack of consistent `:focus-visible` styling for global keyboard navigation, making it hard for keyboard users to track focus.
+**Action:** Always verify that icon-only interactive elements contain screen-reader text (`aria-label`) and ensure global focus indicators (like `*:focus-visible`) are present in the core stylesheet (`index.css`) early in development.

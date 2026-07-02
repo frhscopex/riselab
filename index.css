@@ -1520,3 +1520,9 @@ footer {
     text-decoration: underline;
     text-underline-offset: 3px;
 }
+
+/* Accessibility */
+:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
