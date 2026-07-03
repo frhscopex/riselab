@@ -49,6 +49,17 @@ a:hover {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+/* Accessibility Focus States */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
 /* Premium Background Glow */
 .glow-bg {
     position: fixed;
