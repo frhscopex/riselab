@@ -1,221 +1,388 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RiseLab | Developer Dashboard</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="dashboard-layout">
-        <aside class="sidebar glass-panel">
-            <div class="sidebar-brand">
-                <h2>RiseLab.</h2>
+      <aside class="sidebar glass-panel">
+        <div class="sidebar-brand">
+          <h2>RiseLab.</h2>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active"
+            ><i class="fas fa-chart-line"></i> Overview</a
+          >
+          <a href="#" class="nav-item"><i class="fas fa-key"></i> API Keys</a>
+          <a href="#" class="nav-item"><i class="fas fa-robot"></i> Agents</a>
+          <a href="#" class="nav-item"
+            ><i class="fas fa-database"></i> Knowledge Base</a
+          >
+          <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="avatar">DEV</div>
+            <div class="user-details">
+              <span class="user-name">Developer Name</span>
+              <div class="user-plan-container">
+                <span class="user-plan">Free Plan</span>
+                <button id="upgrade-btn" class="upgrade-link">Upgrade</button>
+              </div>
             </div>
-            <nav class="sidebar-nav">
-                <a href="#" class="nav-item active"><i class="fas fa-chart-line"></i> Overview</a>
-                <a href="#" class="nav-item"><i class="fas fa-key"></i> API Keys</a>
-                <a href="#" class="nav-item"><i class="fas fa-robot"></i> Agents</a>
-                <a href="#" class="nav-item"><i class="fas fa-database"></i> Knowledge Base</a>
-                <a href="#" class="nav-item"><i class="fas fa-cog"></i> Settings</a>
-            </nav>
-            <div class="sidebar-footer">
-                <div class="user-info">
-                    <div class="avatar">DEV</div>
-                    <div class="user-details">
-                        <span class="user-name">Developer Name</span>
-                        <div class="user-plan-container">
-                            <span class="user-plan">Free Plan</span>
-                            <button id="upgrade-btn" class="upgrade-link">Upgrade</button>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="dashboard-content">
+        <header class="dashboard-header">
+          <div class="header-main">
+            <h1>Overview</h1>
+            <div
+              id="stripe-notification"
+              class="stripe-notification"
+              style="display: none"
+            ></div>
+          </div>
+          <div class="header-actions">
+            <button class="btn btn-outline btn-sm" aria-label="Notifications">
+              <i class="fas fa-bell"></i>
+            </button>
+            <button class="btn btn-primary btn-sm">
+              <i class="fas fa-plus"></i> New Agent
+            </button>
+          </div>
+        </header>
+
+        <div class="stats-grid">
+          <div class="stat-card glass-panel">
+            <div class="stat-icon"><i class="fas fa-server"></i></div>
+            <div class="stat-info">
+              <h3>Total Requests</h3>
+              <p class="stat-value">45,231</p>
+              <span class="stat-change positive"
+                ><i class="fas fa-arrow-up"></i> 12% this week</span
+              >
             </div>
-        </aside>
-
-        <main class="dashboard-content">
-            <header class="dashboard-header">
-                <div class="header-main">
-                    <h1>Overview</h1>
-                    <div id="stripe-notification" class="stripe-notification" style="display: none;"></div>
-                </div>
-                <div class="header-actions">
-                    <button class="btn btn-outline btn-sm"><i class="fas fa-bell"></i></button>
-                    <button class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> New Agent</button>
-                </div>
-            </header>
-
-            <div class="stats-grid">
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon"><i class="fas fa-server"></i></div>
-                    <div class="stat-info">
-                        <h3>Total Requests</h3>
-                        <p class="stat-value">45,231</p>
-                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 12% this week</span>
-                    </div>
-                </div>
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon"><i class="fas fa-brain"></i></div>
-                    <div class="stat-info">
-                        <h3>Knowledge Nodes</h3>
-                        <p class="stat-value">1,842</p>
-                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 54 ingested today</span>
-                    </div>
-                </div>
-                <div class="stat-card glass-panel">
-                    <div class="stat-icon"><i class="fas fa-robot"></i></div>
-                    <div class="stat-info">
-                        <h3>Active Agents</h3>
-                        <p class="stat-value">3</p>
-                        <span class="stat-change neutral"><i class="fas fa-minus"></i> No change</span>
-                    </div>
-                </div>
+          </div>
+          <div class="stat-card glass-panel">
+            <div class="stat-icon"><i class="fas fa-brain"></i></div>
+            <div class="stat-info">
+              <h3>Knowledge Nodes</h3>
+              <p class="stat-value">1,842</p>
+              <span class="stat-change positive"
+                ><i class="fas fa-arrow-up"></i> 54 ingested today</span
+              >
             </div>
-
-            <div class="dashboard-grid">
-                <div class="dashboard-section glass-panel">
-                    <div class="section-heading">
-                        <h2>API Keys</h2>
-                        <button class="btn btn-outline btn-sm">Create Key</button>
-                    </div>
-                    <div class="api-key-list">
-                        <div class="api-key-item">
-                            <div class="key-details">
-                                <span class="key-name">Production Agent Fleet</span>
-                                <span class="key-value" data-full-key="rl_prod_9fa2ba3c3f9e8f0f5bd10a878x2">rl_prod_*********************8x2</span>
-                            </div>
-                            <div class="key-actions">
-                                <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                        <div class="api-key-item">
-                            <div class="key-details">
-                                <span class="key-name">Local Development</span>
-                                <span class="key-value" data-full-key="rl_test_1a5ce21aa8f35c2d6cd99db59a4">rl_test_*********************9a4</span>
-                            </div>
-                            <div class="key-actions">
-                                <button class="action-btn copy-key-btn" aria-label="Copy API key"><i class="fas fa-copy"></i></button>
-                                <button class="action-btn danger"><i class="fas fa-trash"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-section glass-panel">
-                    <div class="section-heading">
-                        <h2>Recent Activity</h2>
-                        <a href="#" class="view-all">View all</a>
-                    </div>
-                    <ul class="activity-feed" id="recent-activity-feed">
-                        <li class="activity-empty">Loading recent memory activity...</li>
-                    </ul>
-                </div>
-
-                <div class="dashboard-section glass-panel knowledge-section">
-                    <div class="section-heading">
-                        <h2>Knowledge Base</h2>
-                    </div>
-                    <form id="knowledge-search-form" class="knowledge-search">
-                        <input id="knowledge-search-input" class="form-input knowledge-input" type="text" placeholder="Search research insights..." />
-                        <button type="submit" class="btn btn-outline btn-sm">Search</button>
-                    </form>
-                    <div id="knowledge-results" class="knowledge-grid">
-                        <div class="knowledge-empty">Loading knowledge cards...</div>
-                    </div>
-                </div>
+          </div>
+          <div class="stat-card glass-panel">
+            <div class="stat-icon"><i class="fas fa-robot"></i></div>
+            <div class="stat-info">
+              <h3>Active Agents</h3>
+              <p class="stat-value">3</p>
+              <span class="stat-change neutral"
+                ><i class="fas fa-minus"></i> No change</span
+              >
             </div>
-        </main>
+          </div>
+        </div>
+
+        <div class="dashboard-grid">
+          <div class="dashboard-section glass-panel">
+            <div class="section-heading">
+              <h2>API Keys</h2>
+              <button class="btn btn-outline btn-sm">Create Key</button>
+            </div>
+            <div class="api-key-list">
+              <div class="api-key-item">
+                <div class="key-details">
+                  <span class="key-name">Production Agent Fleet</span>
+                  <span
+                    class="key-value"
+                    data-full-key="rl_prod_9fa2ba3c3f9e8f0f5bd10a878x2"
+                    >rl_prod_*********************8x2</span
+                  >
+                </div>
+                <div class="key-actions">
+                  <button
+                    class="action-btn copy-key-btn"
+                    aria-label="Copy API key"
+                  >
+                    <i class="fas fa-copy"></i>
+                  </button>
+                  <button class="action-btn danger" aria-label="Delete API key">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="api-key-item">
+                <div class="key-details">
+                  <span class="key-name">Local Development</span>
+                  <span
+                    class="key-value"
+                    data-full-key="rl_test_1a5ce21aa8f35c2d6cd99db59a4"
+                    >rl_test_*********************9a4</span
+                  >
+                </div>
+                <div class="key-actions">
+                  <button
+                    class="action-btn copy-key-btn"
+                    aria-label="Copy API key"
+                  >
+                    <i class="fas fa-copy"></i>
+                  </button>
+                  <button class="action-btn danger" aria-label="Delete API key">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-section glass-panel">
+            <div class="section-heading">
+              <h2>Recent Activity</h2>
+              <a href="#" class="view-all">View all</a>
+            </div>
+            <ul class="activity-feed" id="recent-activity-feed">
+              <li class="activity-empty">Loading recent memory activity...</li>
+            </ul>
+          </div>
+
+          <div class="dashboard-section glass-panel knowledge-section">
+            <div class="section-heading">
+              <h2>Knowledge Base</h2>
+            </div>
+            <form id="knowledge-search-form" class="knowledge-search">
+              <input
+                id="knowledge-search-input"
+                class="form-input knowledge-input"
+                type="text"
+                placeholder="Search research insights..."
+              />
+              <button type="submit" class="btn btn-outline btn-sm">
+                Search
+              </button>
+            </form>
+            <div id="knowledge-results" class="knowledge-grid">
+              <div class="knowledge-empty">Loading knowledge cards...</div>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <div id="dashboard-login-modal" class="modal-overlay">
-        <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeDashboardAuthModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-            <div class="modal-header">
-                <h2>Sign In Again</h2>
-                <p>Your session needs verification</p>
-            </div>
-            <form class="auth-form" id="dashboard-login-form">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-input" placeholder="••••••••" required>
-                </div>
-                <div class="oauth-group">
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="google" data-loading-text="Connecting to Google...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="github" data-loading-text="Connecting to GitHub...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-                <div class="auth-divider"><span>or continue with email</span></div>
-                <div id="dashboard-login-error" class="error-msg">Unable to authenticate right now.</div>
-                <button type="submit" class="btn btn-primary btn-large" data-loading-text="Signing in...">Sign In</button>
-            </form>
+      <div class="modal-container glass-panel">
+        <button
+          class="modal-close"
+          onclick="closeDashboardAuthModals()"
+          aria-label="Close modal"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="modal-header">
+          <h2>Sign In Again</h2>
+          <p>Your session needs verification</p>
         </div>
+        <form class="auth-form" id="dashboard-login-form">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="name@company.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div class="oauth-group">
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="google"
+              data-loading-text="Connecting to Google..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#EA4335"
+                  d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"
+                />
+              </svg>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="github"
+              data-loading-text="Connecting to GitHub..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"
+                />
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+          <div class="auth-divider"><span>or continue with email</span></div>
+          <div id="dashboard-login-error" class="error-msg">
+            Unable to authenticate right now.
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary btn-large"
+            data-loading-text="Signing in..."
+          >
+            Sign In
+          </button>
+        </form>
+      </div>
     </div>
 
     <div id="dashboard-signup-modal" class="modal-overlay">
-        <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeDashboardAuthModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-            <div class="modal-header">
-                <h2>Create an Account</h2>
-                <p>Connect providers or sign up with email</p>
-            </div>
-            <form class="auth-form" id="dashboard-signup-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" class="form-input" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="dashboard-signup-password" class="form-input" placeholder="••••••••" required>
-                </div>
-                <div id="dashboard-password-strength" class="password-strength strength-weak">
-                    <div class="strength-meter">
-                        <span id="dashboard-password-strength-fill" class="strength-fill"></span>
-                    </div>
-                    <span id="dashboard-password-strength-text" class="strength-label">Weak password</span>
-                </div>
-                <div class="oauth-group">
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="google" data-loading-text="Connecting to Google...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="github" data-loading-text="Connecting to GitHub...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-                <div class="auth-divider"><span>or continue with email</span></div>
-                <div id="dashboard-signup-error" class="error-msg">Unable to register right now.</div>
-                <button type="submit" class="btn btn-primary btn-large" data-loading-text="Creating account...">Create Account</button>
-            </form>
+      <div class="modal-container glass-panel">
+        <button
+          class="modal-close"
+          onclick="closeDashboardAuthModals()"
+          aria-label="Close modal"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="modal-header">
+          <h2>Create an Account</h2>
+          <p>Connect providers or sign up with email</p>
         </div>
+        <form class="auth-form" id="dashboard-signup-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="name@company.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              id="dashboard-signup-password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div
+            id="dashboard-password-strength"
+            class="password-strength strength-weak"
+          >
+            <div class="strength-meter">
+              <span
+                id="dashboard-password-strength-fill"
+                class="strength-fill"
+              ></span>
+            </div>
+            <span id="dashboard-password-strength-text" class="strength-label"
+              >Weak password</span
+            >
+          </div>
+          <div class="oauth-group">
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="google"
+              data-loading-text="Connecting to Google..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#EA4335"
+                  d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"
+                />
+              </svg>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="github"
+              data-loading-text="Connecting to GitHub..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"
+                />
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+          <div class="auth-divider"><span>or continue with email</span></div>
+          <div id="dashboard-signup-error" class="error-msg">
+            Unable to register right now.
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary btn-large"
+            data-loading-text="Creating account..."
+          >
+            Create Account
+          </button>
+        </form>
+      </div>
     </div>
     <script src="dashboard.js"></script>
-</body>
+  </body>
 </html>

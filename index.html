@@ -1,60 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>RiseLab Digest | The Living Knowledge Layer for AI Agents</title>
-    <link rel="stylesheet" href="index.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="glow-bg"></div>
-    
+
     <nav class="glass-nav">
-        <div class="nav-container">
-            <div class="logo">RiseLab<span>.</span></div>
-            <div class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#comparison">Compare</a>
-                <a href="/pricing">Pricing</a>
-                <a href="#api">API</a>
-                <a href="#" class="btn btn-outline">Docs</a>
-                <a href="#" class="btn btn-primary">Get API Key</a>
-            </div>
+      <div class="nav-container">
+        <div class="logo">RiseLab<span>.</span></div>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#comparison">Compare</a>
+          <a href="/pricing">Pricing</a>
+          <a href="#api">API</a>
+          <a href="#" class="btn btn-outline">Docs</a>
+          <a href="#" class="btn btn-primary">Get API Key</a>
         </div>
+      </div>
     </nav>
 
     <header class="hero">
-        <div class="hero-content">
-            <div class="badge fade-in-up">Research ingestion engine is live</div>
-            <h1 class="fade-in-up delay-1">Agents die at their <span class="text-gradient">knowledge cutoff.</span><br>We fix that.</h1>
-            <p class="fade-in-up delay-2">RiseLab gives your agents a <strong>shared, living knowledge layer</strong> so they stop colliding and start collaborating seamlessly.</p>
-            <div class="hero-features fade-in-up delay-2">
-                <span class="feature-tag">Real-Time Research</span>
-                <span class="feature-tag">Persistent Memory</span>
-                <span class="feature-tag">Fleet Sync</span>
-            </div>
-            <div class="cta-group fade-in-up delay-3">
-                <a href="/pricing" class="btn btn-primary btn-large">View Pricing</a>
-                <a href="#" class="btn btn-outline btn-large">View API Reference</a>
-            </div>
+      <div class="hero-content">
+        <div class="badge fade-in-up">Research ingestion engine is live</div>
+        <h1 class="fade-in-up delay-1">
+          Agents die at their
+          <span class="text-gradient">knowledge cutoff.</span><br />We fix that.
+        </h1>
+        <p class="fade-in-up delay-2">
+          RiseLab gives your agents a
+          <strong>shared, living knowledge layer</strong> so they stop colliding
+          and start collaborating seamlessly.
+        </p>
+        <div class="hero-features fade-in-up delay-2">
+          <span class="feature-tag">Real-Time Research</span>
+          <span class="feature-tag">Persistent Memory</span>
+          <span class="feature-tag">Fleet Sync</span>
         </div>
-        <div class="hero-visual fade-in-up delay-4">
-            <div class="code-window glass-panel">
-                <div class="window-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                    <div class="window-title">agent.js</div>
-                </div>
-                <div class="window-body">
-<pre><code><span class="comment">// 1. Agent detects a knowledge gap</span>
+        <div class="cta-group fade-in-up delay-3">
+          <a href="/pricing" class="btn btn-primary btn-large">View Pricing</a>
+          <a href="#" class="btn btn-outline btn-large">View API Reference</a>
+        </div>
+      </div>
+      <div class="hero-visual fade-in-up delay-4">
+        <div class="code-window glass-panel">
+          <div class="window-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <div class="window-title">agent.js</div>
+          </div>
+          <div class="window-body">
+            <pre><code><span class="comment">// 1. Agent detects a knowledge gap</span>
 <span class="keyword">const</span> gap = <span class="keyword">await</span> riselab.gaps.analyze(agent.history);
 
 <span class="comment">// 2. Queries RiseLab for the latest research</span>
@@ -66,383 +76,878 @@
 <span class="comment">// 3. Ingests structured findings instantly</span>
 <span class="keyword">await</span> agent.learn(papers[<span class="number">0</span>].keyFindings);
 <span class="keyword">await</span> agent.memory.saveNote(<span class="string">"Update planning module"</span>);</code></pre>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </header>
 
     <section id="features" class="features-section">
-        <div class="section-header reveal">
-            <h2>The Brain Upgrade for AI</h2>
-            <p>Six feature domains designed to turn static agents into self-improving systems.</p>
+      <div class="section-header reveal">
+        <h2>The Brain Upgrade for AI</h2>
+        <p>
+          Six feature domains designed to turn static agents into self-improving
+          systems.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card glass-panel reveal">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
+            </svg>
+          </div>
+          <h3>Knowledge & Intelligence</h3>
+          <p>
+            Real-time knowledge updates, semantic search, and structured
+            consumption of daily research.
+          </p>
         </div>
-        
-        <div class="features-grid">
-            <div class="feature-card glass-panel reveal">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
-                <h3>Knowledge & Intelligence</h3>
-                <p>Real-time knowledge updates, semantic search, and structured consumption of daily research.</p>
-            </div>
-            <div class="feature-card glass-panel reveal delay-1">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></div>
-                <h3>Memory & Learning</h3>
-                <p>Persistent cross-session memory, comprehensive reading history, and automated knowledge gap detection.</p>
-            </div>
-            <div class="feature-card glass-panel reveal delay-2">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg></div>
-                <h3>Awareness & Monitoring</h3>
-                <p>Trend awareness, specific source monitoring, and conflict/contradiction detection in new research.</p>
-            </div>
-            <div class="feature-card glass-panel reveal">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
-                <h3>Collaboration</h3>
-                <p>Shared knowledge spaces across your fleet, agent-to-agent passing, and collective intelligence feeds.</p>
-            </div>
-            <div class="feature-card glass-panel reveal delay-1">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg></div>
-                <h3>Self-Improvement</h3>
-                <p>Capability benchmarking integration, applied technique libraries, and performance impact tracking.</p>
-            </div>
-            <div class="feature-card glass-panel reveal delay-2">
-                <div class="icon-wrapper"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div>
-                <h3>Utility & Infrastructure</h3>
-                <p>Structured citation generation, multi-language support, and verifiable content freshness signals.</p>
-            </div>
+        <div class="feature-card glass-panel reveal delay-1">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+              ></path>
+            </svg>
+          </div>
+          <h3>Memory & Learning</h3>
+          <p>
+            Persistent cross-session memory, comprehensive reading history, and
+            automated knowledge gap detection.
+          </p>
         </div>
+        <div class="feature-card glass-panel reveal delay-2">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+          </div>
+          <h3>Awareness & Monitoring</h3>
+          <p>
+            Trend awareness, specific source monitoring, and
+            conflict/contradiction detection in new research.
+          </p>
+        </div>
+        <div class="feature-card glass-panel reveal">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <h3>Collaboration</h3>
+          <p>
+            Shared knowledge spaces across your fleet, agent-to-agent passing,
+            and collective intelligence feeds.
+          </p>
+        </div>
+        <div class="feature-card glass-panel reveal delay-1">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+            </svg>
+          </div>
+          <h3>Self-Improvement</h3>
+          <p>
+            Capability benchmarking integration, applied technique libraries,
+            and performance impact tracking.
+          </p>
+        </div>
+        <div class="feature-card glass-panel reveal delay-2">
+          <div class="icon-wrapper">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              ></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <h3>Utility & Infrastructure</h3>
+          <p>
+            Structured citation generation, multi-language support, and
+            verifiable content freshness signals.
+          </p>
+        </div>
+      </div>
     </section>
 
     <section id="architecture" class="architecture-section">
-        <div class="section-header reveal">
-            <h2>The Architecture</h2>
-            <p>A unified layer connecting your agents to persistent context and the real world.</p>
+      <div class="section-header reveal">
+        <h2>The Architecture</h2>
+        <p>
+          A unified layer connecting your agents to persistent context and the
+          real world.
+        </p>
+      </div>
+
+      <div class="arch-container reveal">
+        <div class="arch-group">
+          <div class="arch-label">Your Infrastructure</div>
+          <div class="arch-node glass-panel">
+            <div class="icon-wrapper small">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                <line x1="6" y1="18" x2="6.01" y2="18"></line>
+              </svg>
+            </div>
+            <span>Multi-Agent Fleet</span>
+          </div>
         </div>
-        
-        <div class="arch-container reveal">
-            <div class="arch-group">
-                <div class="arch-label">Your Infrastructure</div>
-                <div class="arch-node glass-panel">
-                    <div class="icon-wrapper small"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg></div>
-                    <span>Multi-Agent Fleet</span>
-                </div>
-            </div>
-            
-            <div class="arch-arrow">
-                <div class="arrow-line"></div>
-                <span class="arrow-text">API / SDK</span>
-            </div>
 
-            <div class="arch-group center">
-                <div class="arch-label highlight">RiseLab Layer</div>
-                <div class="arch-node core glass-panel">
-                    <h3>Living Knowledge Engine</h3>
-                    <div class="core-tags">
-                        <span>Vector Memory</span>
-                        <span>Fleet Sync</span>
-                        <span>Real-Time Index</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="arch-arrow">
-                <div class="arrow-line"></div>
-                <span class="arrow-text">Ingestion</span>
-            </div>
-
-            <div class="arch-group">
-                <div class="arch-label">The World</div>
-                <div class="arch-node glass-panel">
-                    <div class="icon-wrapper small"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></div>
-                    <span>Research & Web</span>
-                </div>
-            </div>
+        <div class="arch-arrow">
+          <div class="arrow-line"></div>
+          <span class="arrow-text">API / SDK</span>
         </div>
+
+        <div class="arch-group center">
+          <div class="arch-label highlight">RiseLab Layer</div>
+          <div class="arch-node core glass-panel">
+            <h3>Living Knowledge Engine</h3>
+            <div class="core-tags">
+              <span>Vector Memory</span>
+              <span>Fleet Sync</span>
+              <span>Real-Time Index</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-arrow">
+          <div class="arrow-line"></div>
+          <span class="arrow-text">Ingestion</span>
+        </div>
+
+        <div class="arch-group">
+          <div class="arch-label">The World</div>
+          <div class="arch-node glass-panel">
+            <div class="icon-wrapper small">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path
+                  d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+                ></path>
+              </svg>
+            </div>
+            <span>Research & Web</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section id="api" class="api-section">
-        <div class="section-header reveal">
-            <h2>Built for Developers</h2>
-            <p>A unified API to give your agents memory, real-time knowledge, and collaborative intelligence.</p>
+      <div class="section-header reveal">
+        <h2>Built for Developers</h2>
+        <p>
+          A unified API to give your agents memory, real-time knowledge, and
+          collaborative intelligence.
+        </p>
+      </div>
+
+      <div class="api-playground glass-panel reveal">
+        <div class="api-sidebar">
+          <div class="api-endpoint active" data-endpoint="feed">
+            <span class="method get">GET</span>
+            <span class="path">/v1/knowledge/feed</span>
+          </div>
+          <div class="api-endpoint" data-endpoint="search">
+            <span class="method post">POST</span>
+            <span class="path">/v1/knowledge/search</span>
+          </div>
+          <div class="api-endpoint" data-endpoint="memory">
+            <span class="method post">POST</span>
+            <span class="path">/v1/agents/memory</span>
+          </div>
+          <div class="api-endpoint" data-endpoint="sync">
+            <span class="method get">GET</span>
+            <span class="path">/v1/fleet/sync</span>
+          </div>
         </div>
-        
-        <div class="api-playground glass-panel reveal">
-            <div class="api-sidebar">
-                <div class="api-endpoint active" data-endpoint="feed">
-                    <span class="method get">GET</span>
-                    <span class="path">/v1/knowledge/feed</span>
-                </div>
-                <div class="api-endpoint" data-endpoint="search">
-                    <span class="method post">POST</span>
-                    <span class="path">/v1/knowledge/search</span>
-                </div>
-                <div class="api-endpoint" data-endpoint="memory">
-                    <span class="method post">POST</span>
-                    <span class="path">/v1/agents/memory</span>
-                </div>
-                <div class="api-endpoint" data-endpoint="sync">
-                    <span class="method get">GET</span>
-                    <span class="path">/v1/fleet/sync</span>
-                </div>
-            </div>
-            <div class="api-content code-window">
-                <div class="window-header">
-                    <span class="dot red"></span>
-                    <span class="dot yellow"></span>
-                    <span class="dot green"></span>
-                    <div class="window-title" id="api-title">Response: 200 OK</div>
-                </div>
-                <div class="window-body">
-<pre><code id="api-code-block" class="language-json"></code></pre>
-                </div>
-            </div>
+        <div class="api-content code-window">
+          <div class="window-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <div class="window-title" id="api-title">Response: 200 OK</div>
+          </div>
+          <div class="window-body">
+            <pre><code id="api-code-block" class="language-json"></code></pre>
+          </div>
         </div>
+      </div>
     </section>
 
     <section id="comparison" class="comparison-section">
-        <div class="section-header reveal">
-            <h2>The RiseLab Advantage</h2>
-            <p>See exactly what your agents gain the moment you integrate the API.</p>
-        </div>
-        
-        <div class="table-container glass-panel reveal">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Ability</th>
-                        <th>Without RiseLab</th>
-                        <th>With RiseLab</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Knowledge recency</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Stuck at training cutoff</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Updated daily</span></td>
-                    </tr>
-                    <tr>
-                        <td>Research reading</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Can't read new papers</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Reads structured summaries instantly</span></td>
-                    </tr>
-                    <tr>
-                        <td>Memory across sessions</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Resets every session</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Persists forever</span></td>
-                    </tr>
-                    <tr>
-                        <td>Team knowledge sharing</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Each agent isolated</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Shared collective intelligence</span></td>
-                    </tr>
-                    <tr>
-                        <td>Self-improvement</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Static capabilities</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Measurably improves over time</span></td>
-                    </tr>
-                    <tr>
-                        <td>Trend awareness</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Blind to what's new</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Real-time trend signals</span></td>
-                    </tr>
-                    <tr>
-                        <td>Contradiction handling</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Holds outdated beliefs</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Automatically corrects itself</span></td>
-                    </tr>
-                    <tr>
-                        <td>Citation & sourcing</td>
-                        <td class="negative"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> Hallucinated sources</span></td>
-                        <td class="positive"><span class="flex-align"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Verified, traceable citations</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div class="section-header reveal">
+        <h2>The RiseLab Advantage</h2>
+        <p>
+          See exactly what your agents gain the moment you integrate the API.
+        </p>
+      </div>
+
+      <div class="table-container glass-panel reveal">
+        <table>
+          <thead>
+            <tr>
+              <th>Ability</th>
+              <th>Without RiseLab</th>
+              <th>With RiseLab</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Knowledge recency</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Stuck at training cutoff</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Updated daily</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Research reading</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Can't read new papers</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Reads structured summaries instantly</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Memory across sessions</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Resets every session</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Persists forever</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Team knowledge sharing</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Each agent isolated</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Shared collective intelligence</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Self-improvement</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Static capabilities</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Measurably improves over time</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Trend awareness</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Blind to what's new</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Real-time trend signals</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Contradiction handling</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Holds outdated beliefs</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Automatically corrects itself</span
+                >
+              </td>
+            </tr>
+            <tr>
+              <td>Citation & sourcing</td>
+              <td class="negative">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                  Hallucinated sources</span
+                >
+              </td>
+              <td class="positive">
+                <span class="flex-align"
+                  ><svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                  Verified, traceable citations</span
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <section class="cta-section reveal">
-        <div class="cta-box glass-panel">
-            <div class="cta-content">
-                <h2>Ready to evolve your agents?</h2>
-                <p>Join the developer platform and give your AI the ability to learn continuously. Get your API keys instantly.</p>
-                <div class="cta-actions">
-                    <a href="/pricing" class="btn btn-primary"><i class="fas fa-key"></i> View Pricing</a>
-                    <button class="btn btn-outline" onclick="window.location.href='https://docs.riselab.ai'"><i class="fas fa-book"></i> Read the Docs</button>
-                </div>
-            </div>
+      <div class="cta-box glass-panel">
+        <div class="cta-content">
+          <h2>Ready to evolve your agents?</h2>
+          <p>
+            Join the developer platform and give your AI the ability to learn
+            continuously. Get your API keys instantly.
+          </p>
+          <div class="cta-actions">
+            <a href="/pricing" class="btn btn-primary"
+              ><i class="fas fa-key"></i> View Pricing</a
+            >
+            <button
+              class="btn btn-outline"
+              onclick="window.location.href = 'https://docs.riselab.ai'"
+            >
+              <i class="fas fa-book"></i> Read the Docs
+            </button>
+          </div>
         </div>
+      </div>
     </section>
 
     <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <h3>RiseLab.</h3>
-                <p>The living knowledge layer for AI.</p>
-            </div>
-            <div class="footer-links">
-                <div class="link-group">
-                    <h4>Platform</h4>
-                    <a href="#api">API Docs</a>
-                    <a href="/pricing">Pricing</a>
-                    <a href="#">Status</a>
-                </div>
-                <div class="link-group">
-                    <h4>Legal</h4>
-                    <a href="/terms">Terms</a>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/refund">Refunds</a>
-                </div>
-            </div>
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>RiseLab.</h3>
+          <p>The living knowledge layer for AI.</p>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 RiseLab. All rights reserved.</p>
+        <div class="footer-links">
+          <div class="link-group">
+            <h4>Platform</h4>
+            <a href="#api">API Docs</a>
+            <a href="/pricing">Pricing</a>
+            <a href="#">Status</a>
+          </div>
+          <div class="link-group">
+            <h4>Legal</h4>
+            <a href="/terms">Terms</a>
+            <a href="/privacy">Privacy</a>
+            <a href="/refund">Refunds</a>
+          </div>
         </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 RiseLab. All rights reserved.</p>
+      </div>
     </footer>
 
     <!-- Login Modal -->
     <div id="login-modal" class="modal-overlay">
-        <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-            <div class="modal-header">
-                <h2>Welcome Back</h2>
-                <p>Enter your credentials to access your dashboard</p>
-            </div>
-            <form class="auth-form" id="login-form">
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" class="form-input" placeholder="••••••••" required>
-                </div>
-                <div class="oauth-group">
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="google" data-loading-text="Connecting to Google...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="github" data-loading-text="Connecting to GitHub...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-                <div class="auth-divider"><span>or continue with email</span></div>
-                <div id="login-error" class="error-msg">Invalid email or password.</div>
-                <button type="submit" class="btn btn-primary btn-large" data-loading-text="Signing in...">Sign In</button>
-            </form>
-            <div class="form-footer">
-                Don't have an account? <a href="#" onclick="openModal('signup')">Create one free</a>
-            </div>
+      <div class="modal-container glass-panel">
+        <button
+          class="modal-close"
+          onclick="closeModals()"
+          aria-label="Close modal"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="modal-header">
+          <h2>Welcome Back</h2>
+          <p>Enter your credentials to access your dashboard</p>
         </div>
+        <form class="auth-form" id="login-form">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="name@company.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div class="oauth-group">
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="google"
+              data-loading-text="Connecting to Google..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#EA4335"
+                  d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"
+                />
+              </svg>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="github"
+              data-loading-text="Connecting to GitHub..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"
+                />
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+          <div class="auth-divider"><span>or continue with email</span></div>
+          <div id="login-error" class="error-msg">
+            Invalid email or password.
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary btn-large"
+            data-loading-text="Signing in..."
+          >
+            Sign In
+          </button>
+        </form>
+        <div class="form-footer">
+          Don't have an account?
+          <a href="#" onclick="openModal('signup')">Create one free</a>
+        </div>
+      </div>
     </div>
 
     <!-- Signup Modal -->
     <div id="signup-modal" class="modal-overlay">
-        <div class="modal-container glass-panel">
-            <button class="modal-close" onclick="closeModals()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
-            <div class="modal-header">
-                <h2>Get Started</h2>
-                <p>Join RiseLab to start building living AI systems</p>
-            </div>
-            <form class="auth-form" id="signup-form">
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" class="form-input" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" class="form-input" placeholder="name@company.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="signup-password" class="form-input" placeholder="••••••••" required>
-                </div>
-                <div id="password-strength" class="password-strength strength-weak">
-                    <div class="strength-meter">
-                        <span id="password-strength-fill" class="strength-fill"></span>
-                    </div>
-                    <span id="password-strength-text" class="strength-label">Weak password</span>
-                </div>
-                <ul class="password-rules" id="password-rules">
-                    <li data-rule="length">At least 10 characters</li>
-                    <li data-rule="mixed">Uppercase and lowercase letters</li>
-                    <li data-rule="number">At least one number</li>
-                    <li data-rule="symbol">At least one special symbol</li>
-                </ul>
-                <div class="oauth-group">
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="google" data-loading-text="Connecting to Google...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="#EA4335" d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"/>
-                        </svg>
-                        Continue with Google
-                    </button>
-                    <button type="button" class="btn btn-outline btn-large oauth-btn" data-provider="github" data-loading-text="Connecting to GitHub...">
-                        <svg viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill="currentColor" d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"/>
-                        </svg>
-                        Continue with GitHub
-                    </button>
-                </div>
-                <div class="auth-divider"><span>or continue with email</span></div>
-                <p class="signup-consent">
-                    By creating an account, you agree to our
-                    <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a>
-                    and acknowledge our
-                    <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
-                </p>
-                <div id="signup-error" class="error-msg">Something went wrong. Please try again.</div>
-                <button type="submit" class="btn btn-primary btn-large" data-loading-text="Creating account...">Create Account</button>
-            </form>
-            <div class="form-footer">
-                Already have an account? <a href="#" onclick="openModal('login')">Sign in instead</a>
-            </div>
+      <div class="modal-container glass-panel">
+        <button
+          class="modal-close"
+          onclick="closeModals()"
+          aria-label="Close modal"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="modal-header">
+          <h2>Get Started</h2>
+          <p>Join RiseLab to start building living AI systems</p>
         </div>
+        <form class="auth-form" id="signup-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              class="form-input"
+              placeholder="John Doe"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input
+              type="email"
+              class="form-input"
+              placeholder="name@company.com"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              id="signup-password"
+              class="form-input"
+              placeholder="••••••••"
+              required
+            />
+          </div>
+          <div id="password-strength" class="password-strength strength-weak">
+            <div class="strength-meter">
+              <span id="password-strength-fill" class="strength-fill"></span>
+            </div>
+            <span id="password-strength-text" class="strength-label"
+              >Weak password</span
+            >
+          </div>
+          <ul class="password-rules" id="password-rules">
+            <li data-rule="length">At least 10 characters</li>
+            <li data-rule="mixed">Uppercase and lowercase letters</li>
+            <li data-rule="number">At least one number</li>
+            <li data-rule="symbol">At least one special symbol</li>
+          </ul>
+          <div class="oauth-group">
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="google"
+              data-loading-text="Connecting to Google..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="#EA4335"
+                  d="M12 10.2v3.9h5.5c-.2 1.3-1.5 3.9-5.5 3.9-3.3 0-6-2.7-6-6s2.7-6 6-6c1.9 0 3.2.8 3.9 1.5l2.6-2.5C16.9 3.5 14.7 2.6 12 2.6A9.4 9.4 0 0 0 2.6 12 9.4 9.4 0 0 0 12 21.4c5.4 0 9-3.8 9-9.1 0-.6-.1-1.1-.2-1.6H12z"
+                />
+              </svg>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline btn-large oauth-btn"
+              data-provider="github"
+              data-loading-text="Connecting to GitHub..."
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.4.7-4.1-1.5-4.1-1.5-.5-1.4-1.3-1.8-1.3-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1 1.7-.6 2.1-1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-6A4.8 4.8 0 0 1 5 6.5c-.1-.3-.6-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.7 11.7 0 0 1 6 0c2.2-1.5 3.2-1.2 3.2-1.2.7 1.7.3 3 .2 3.2a4.8 4.8 0 0 1 1.3 3.3c0 4.7-2.8 5.7-5.6 6 .4.3.9 1 .9 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .5z"
+                />
+              </svg>
+              Continue with GitHub
+            </button>
+          </div>
+          <div class="auth-divider"><span>or continue with email</span></div>
+          <p class="signup-consent">
+            By creating an account, you agree to our
+            <a href="/terms" target="_blank" rel="noopener"
+              >Terms &amp; Conditions</a
+            >
+            and acknowledge our
+            <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a
+            >.
+          </p>
+          <div id="signup-error" class="error-msg">
+            Something went wrong. Please try again.
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary btn-large"
+            data-loading-text="Creating account..."
+          >
+            Create Account
+          </button>
+        </form>
+        <div class="form-footer">
+          Already have an account?
+          <a href="#" onclick="openModal('login')">Sign in instead</a>
+        </div>
+      </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        async function handleUpgrade(plan, event) {
-            const token = localStorage.getItem('riselab_token');
-            if (!token) {
-                openModal('signup');
-                return;
-            }
-
-            if (plan === 'free') {
-                window.location.href = 'dashboard.html';
-                return;
-            }
-
-            try {
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.disabled = true;
-                btn.textContent = 'Processing...';
-
-                const res = await fetch('https://riselab.tech/api/stripe/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    },
-                    body: JSON.stringify({ plan })
-                });
-
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.error || 'Upgrade failed');
-
-                window.location.href = data.url;
-            } catch (err) {
-                alert('Error: ' + err.message);
-                const btn = event.target;
-                if (btn) {
-                    btn.disabled = false;
-                    btn.textContent = 'Retry';
-                }
-            }
+      async function handleUpgrade(plan, event) {
+        const token = localStorage.getItem("riselab_token");
+        if (!token) {
+          openModal("signup");
+          return;
         }
+
+        if (plan === "free") {
+          window.location.href = "dashboard.html";
+          return;
+        }
+
+        try {
+          const btn = event.target;
+          const originalText = btn.textContent;
+          btn.disabled = true;
+          btn.textContent = "Processing...";
+
+          const res = await fetch(
+            "https://riselab.tech/api/stripe/create-checkout-session",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({ plan }),
+            },
+          );
+
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Upgrade failed");
+
+          window.location.href = data.url;
+        } catch (err) {
+          alert("Error: " + err.message);
+          const btn = event.target;
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "Retry";
+          }
+        }
+      }
     </script>
-</body>
+  </body>
 </html>
